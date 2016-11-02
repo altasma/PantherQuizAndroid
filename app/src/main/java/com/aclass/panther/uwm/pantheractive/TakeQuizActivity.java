@@ -147,10 +147,7 @@ public class TakeQuizActivity extends AppCompatActivity implements GoogleApiClie
                             chm.put("E", classDataSnapShot.child("choices").child("E").getValue());
                             chm.put("F", classDataSnapShot.child("choices").child("F").getValue());
 
-
-
                         }
-
 
 
                         q1.setChoices(chm);

@@ -47,7 +47,6 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
     QuestionModel question ;
 
 
-
     public QuestionsAdapter(Context context, QuestionModel[] resource) {
         super(context, R.layout.question, resource);
         this.context = context;
@@ -81,11 +80,7 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
         choiceE = (TextView) convertView.findViewById(R.id.choiceE);
         choiceF = (TextView) convertView.findViewById(R.id.choiceF);
 
-
-
         final TextView  correctAnsText = (TextView) convertView.findViewById(R.id.correctAnswer);
-
-
 
 
        final Button choiceA_btn = (Button) convertView.findViewById(R.id.choiceA_textBtn);
@@ -95,8 +90,6 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
         final Button  choiceE_btn = (Button) convertView.findViewById(R.id.choiceE_textBtn);
         final Button  choiceF_btn = (Button) convertView.findViewById(R.id.choiceF_textBtn);
 
-//        final TextView  choiceD = (TextView) convertView.findViewById(R.id.choiceD);
-
 
         choiceA_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
         choiceB_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
@@ -104,26 +97,7 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
         choiceD_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
         choiceE_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
         choiceF_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-//        choiceD.setBackgroundColor(Color.argb(255,245,245,245));
 
-
-
-
-//        TextView name = (TextView) convertView.findViewById(R.id.textView1);
-//        CheckBox cb = (CheckBox) convertView.findViewById(R.id.checkBox1);
-//        final Button trueBtn = (Button) convertView.findViewById(R.id.trueBtn);
-//        final Button  falseBtn = (Button)convertView.findViewById(R.id.falseBtn);
-
-//        choiceD.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                choiceD.setBackgroundColor(Color.argb(255,51, 102, 255));
-//                choiceA_btn.setBackgroundColor(Color.argb(255,245,245,245));
-//                choiceB_btn.setBackgroundColor(Color.argb(255,245,245,245));
-//                choiceC_btn.setBackgroundColor(Color.argb(255,245,245,245));
-//
-//            }
-//        });
 
         choiceA_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +109,6 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
                 choiceE_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 choiceF_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 correctAnsText.setText("You selected: A");
-//                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
 
 
             }
@@ -153,8 +126,6 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
                 choiceD_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 correctAnsText.setText("You selected: B");
 
-//                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
-
 
             }
         });
@@ -168,8 +139,6 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
                 choiceE_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 choiceF_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 correctAnsText.setText("You selected: C");
-
-//                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
 
 
             }
@@ -187,7 +156,6 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
                 choiceA_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 correctAnsText.setText("You selected: D");
 
-//                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
             }
         });
 
@@ -200,9 +168,7 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
                 choiceC_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 choiceB_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 choiceA_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-                correctAnsText.setText("You selected: D");
-
-//                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
+                correctAnsText.setText("You selected: E");
             }
         });
         choiceF_btn.setOnClickListener(new View.OnClickListener() {
@@ -214,22 +180,10 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
                 choiceC_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 choiceB_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
                 choiceA_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-                correctAnsText.setText("You selected: D");
-
-//                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
+                correctAnsText.setText("You selected: F");
             }
         });
 
-
-
-//        falseBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                falseBtn.setBackgroundColor(Color.argb(255,7,132,7));
-//                trueBtn.setBackgroundColor(Color.argb(255,171,197,236));
-//            }
-//        });
-//        EditText et = (EditText) convertView.findViewById(R.id.editText1);
         TextView qnNumber = (TextView) convertView.findViewById(R.id.questionNumber);
         qnNumber.setText("# " + (position +1) );
 
@@ -281,90 +235,10 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
 
         }
 
-
-//        if(this.questions[1].getQuestionText() != null){
-//            questionView.setText(this.questions[position].getQuestionText());
-//
-//            choiceA.setText(this.questions[1].getChoices()[0].toString());
-//            choiceB.setText(this.questions[1].getChoices()[1].toString());
-//            choiceC.setVisibility(choiceC.VISIBLE);
-//            choiceCLabel.setVisibility(choiceCLabel.VISIBLE);
-//
-//            Log.i("Inside Question Adapter", "Question text was not null");
-//        }
-//        else {
-//            questionView.setText(" And This is set from adapaters class");
-//            //Log.i("Inside Question Adapter", "Question text was  null");
-//
-//
-//        }
-
-
-//        Log.i("for loop out ",questions1[0].toString());
-//
-//        for(int i = 0; i < questions1.length;i++){
-//            int k = position+1;
-//            Log.i("for loop",questions1[i].toString());
-//            questionView.setText(questions1[i].getQuestion().toString());
-////            if(questions1[i].getChoices().get("A")!= null){
-////                Log.i("Key of A: ", questions1[i].getChoices().get("A").toString());
-////                choiceA.setText(questions1[i].getChoices().get("A").toString());
-////
-////            }
-////            else{
-////                choiceA.setText(questions1[i].getChoices().toString());
-////
-////            }
-////            if(questions1[i].getChoices().get("B")!= null){
-////                choiceB.setText(questions1[i].getChoices().get("B").toString());
-////            }
-////            else {
-////                choiceB.setText(questions1[i].getChoices().toString());
-////
-////            }
-//
-//        }
-
-
-
-
-//        for(int i =0; i < questions.length;i++){
-//            int k = position + 1;
-//            choiceC.setVisibility(choiceC.VISIBLE);
-//            choiceCLabel.setVisibility(choiceCLabel.VISIBLE);
-//            questionView.setText(" Question text of question " + k);
-//            choiceA.setText("Choice A of question " + k);
-//            choiceB.setText("Choice B of question " + k);
-//            choiceC.setText("Choice C of question " + k);
-//
-//
-//        }
-
-
-
-//        name.setText(questions[position].getName());
-//        et.setText(questions[position].getTextEdit());
-//        if (questions[position].getValue() == 1)
-//            cb.setChecked(true);
-//        else
-//            cb.setChecked(false);
         return convertView;
     }
 
-//    @Override
-//    public void onClick(View v) {
-////        if(v == trueBtn){
-////            trueBtn.setBackgroundColor(Color.GREEN);
-////            falseBtn.setBackgroundColor(Color.CYAN);
-////        }
-////        else if(v == falseBtn){
-////           falseBtn.setBackgroundColor(Color.GREEN);
-////            trueBtn.setBackgroundColor(Color.CYAN);
-////        }
-////        else{
-////
-////        }
-//    }
+
 }
 
 
