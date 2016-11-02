@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#44ce8d</color>
+    <color name="colorPrimaryDark">#44ce8d</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorInsructorMain">#c0e5f4</color>
+    <color name="colorStudentMain">#e1f5f2</color>
+    <color name="colorAppBackground">#e3e3e3</color>
+    <color name="colorSucessGreen">#078407</color>
+    <color name="colorFresh">#8adec0</color>
+    <color name="grey_300">#F5F5F5</color>
+    <color name="grey_100">#d6dbe1</color>
+    <color name="dark_black">#000000</color>
+    <color name="gray">#4e4b4b</color>
+
+
+</resources>

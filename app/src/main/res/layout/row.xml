@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:orientation="horizontal"
+    android:background="@color/colorAppBackground">
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/questionNumber"
+        android:layout_marginBottom="40dp"
+        android:text="# "/>
+    <EditText
+        android:id="@+id/editText1"
+        android:hint="Enter answer"
+        android:layout_width="wrap_content"
+        android:layout_alignBaseline="@+id/questionNumber"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/questionNumber"
+        android:layout_toEndOf="@+id/questionNumber"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/trueBtn"
+        android:layout_below="@+id/editText1"
+        android:text="True"
+        android:background="@color/colorFresh"
+        android:layout_marginRight="10dp"
+        android:onClick="onClick"
+        android:layout_alignLeft="@+id/editText1"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/falseBtn"
+        android:layout_below="@+id/editText1"
+        android:text="False"
+        android:layout_toRightOf="@+id/trueBtn"
+        android:background="@color/colorFresh"
+        android:onClick="onClick"
+        android:layout_toEndOf="@+id/trueBtn"/>
+    <CheckBox
+        android:id="@+id/checkBox1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/trueBtn"
+        android:text="" />
+
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_below="@+id/questionNumber"
+        android:layout_toEndOf="@+id/checkBox1"
+        android:layout_toRightOf="@+id/checkBox1"
+        android:layout_alignBaseline="@+id/checkBox1"
+        />
+
+
+</RelativeLayout>

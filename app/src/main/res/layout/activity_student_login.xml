@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sign_in_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/colorStudentMain"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.aclass.panther.uwm.pantheractive.StudentLogin">
+    >
+
+    <TextView
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:id="@+id/signIn_lable"
+        android:text="@string/sign_in"/>
+    <EditText
+        android:inputType="textEmailAddress"
+        android:hint="email@exampl.ecom"
+        android:layout_below="@+id/signIn_lable"
+        android:layout_width="wrap_content"
+        android:id="@+id/email_input"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:id="@+id/password_input"
+        android:maxLength="40"
+        android:layout_below="@+id/email_input"
+        android:hint="password"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password_input"
+        android:maxLength="40"
+        android:layout_marginBottom="40dp"
+        android:id="@+id/login_btn"
+        android:text="Login"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/register_button"
+        android:text="Register"
+        android:layout_below="@+id/login_btn"
+        />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_below="@+id/login_btn"
+        android:layout_toRightOf="@+id/register_button"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center"/>
+
+</RelativeLayout>
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
+    <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
+    <!--android:paddingRight="@dimen/activity_horizontal_margin"-->
+    <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+    <!--tools:context="com.aclass.panther.uwm.pantheractive.StudentLogin">-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Login"-->
+        <!--android:id="@+id/btnSignIn"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginLeft="86dp"-->
+        <!--android:layout_marginStart="86dp"-->
+        <!--android:background="#3c9b1f"-->
+        <!--android:textSize="30dp"-->
+        <!--android:width="200dp" />-->
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="New User"-->
+        <!--android:id="@+id/btnSignUp"-->
+        <!--android:layout_below="@+id/btnSignIn"-->
+        <!--android:layout_alignLeft="@+id/btnSignIn"-->
+        <!--android:layout_alignStart="@+id/btnSignIn"-->
+        <!--android:layout_marginTop="53dp"-->
+        <!--android:background="#0875b0"-->
+        <!--android:textSize="30dp"-->
+        <!--android:width="200dp" />-->
+
+    <!--<EditText-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:inputType="textEmailAddress"-->
+        <!--android:ems="10"-->
+        <!--android:id="@+id/editText"-->
+        <!--android:layout_marginTop="57dp"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignLeft="@+id/btnSignIn"-->
+        <!--android:layout_alignStart="@+id/btnSignIn" />-->
+
+    <!--<EditText-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:inputType="textPassword"-->
+        <!--android:ems="10"-->
+        <!--android:id="@+id/editText2"-->
+        <!--android:layout_below="@+id/editText"-->
+        <!--android:layout_alignLeft="@+id/editText"-->
+        <!--android:layout_alignStart="@+id/editText" />-->
+<!--</RelativeLayout>-->
+
+

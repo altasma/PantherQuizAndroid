@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "194645364198",
+    "firebase_url": "https://pantheractive-60c27.firebaseio.com",
+    "project_id": "pantheractive-60c27",
+    "storage_bucket": "pantheractive-60c27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194645364198:android:15a831b82879b112",
+        "android_client_info": {
+          "package_name": "com.aclass.panther.uwm.pantheractive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194645364198-krraql4vtds8eu0lr7c9igc9s49bm04s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aclass.panther.uwm.pantheractive",
+            "certificate_hash": "A627E2D158775249BCC36F2E9D9081A8923CFEDC"
+          }
+        },
+        {
+          "client_id": "194645364198-6okr74vhhub74o85afj9ll3jirdqgdm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOawKRmUd4fLMfuekoW2BsBwAl8Y0OO5g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194645364198-6okr74vhhub74o85afj9ll3jirdqgdm0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
