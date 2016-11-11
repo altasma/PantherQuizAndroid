@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -42,10 +43,12 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
     private SharedPreferences mSharedPreferences;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_icon_tab);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_quiz_list);
 
         final List data1 = new ArrayList<QuestionModel>();
@@ -54,7 +57,7 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
         Spinner spinner = (Spinner) findViewById(R.id.quizList_spinner);
         spinner.setOnItemSelectedListener(this);
 
-       final  ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.quiz_lists, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -94,7 +97,7 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
             public void onDataChange(DataSnapshot dataSnapshot) {
                 data1.clear();
 
-                for(DataSnapshot classDataSnapShot : dataSnapshot.getChildren()){
+                for (DataSnapshot classDataSnapShot : dataSnapshot.getChildren()) {
                     // data1.clear();
 
                     QuestionModel q1 = new QuestionModel();
@@ -111,36 +114,32 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
 
                         q1.setAnswer(classDataSnapShot.child("answer").getValue().toString());
                         q1.setQuestion(classDataSnapShot.child("question").getValue().toString());
-                        HashMap chm = new HashMap<String,String>();
+                        HashMap chm = new HashMap<String, String>();
                         chm.put("Achoice", classDataSnapShot.child("choices").getValue());
 
                         //  q1 = (QuestionModel) classDataSnapShot.getValue();
                         Log.i("q1 :", q1.toString());
-                    }
-                    catch(Exception e){
+                    } catch (Exception e) {
                         Log.i("Eccveption", e.getMessage());
                     }
 
 
-                    Log.i("SnapShotto string",classDataSnapShot.toString());
+                    Log.i("SnapShotto string", classDataSnapShot.toString());
 
-                    if(classDataSnapShot.getKey().equals("choices")){
+                    if (classDataSnapShot.getKey().equals("choices")) {
                         Log.i("child tostring key", classDataSnapShot.getKey());
 //                        QuestionModel q1 = new QuestionModel();
                         HashMap nhm = new HashMap();
-                        nhm.put("A",classDataSnapShot.getValue().toString());
+                        nhm.put("A", classDataSnapShot.getValue().toString());
                         q1.setChoices(nhm);
                         Log.i("Q1 is ", q1.getChoices().toString());
                         Log.i("Q1", q1.toString());
 
-                    }
-                    else if(classDataSnapShot.getKey().equals("question")){
+                    } else if (classDataSnapShot.getKey().equals("question")) {
                         q1.setQuestion(classDataSnapShot.getValue().toString());
-                    }
-                    else if(classDataSnapShot.getKey().equals("answer")){
+                    } else if (classDataSnapShot.getKey().equals("answer")) {
                         q1.setAnswer(classDataSnapShot.getValue().toString());
-                    }
-                    else {
+                    } else {
 
                     }
                     // QuestionModel q  = classDataSnapShot.getValue(QuestionModel.class);
@@ -158,10 +157,9 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
 
             }
         });
-      //  Log.i("Data1 lower: ", data1.get(0).toString());
+        //  Log.i("Data1 lower: ", data1.get(0).toString());
 
-        Log.i(TAG,database2.toString());
-
+        Log.i(TAG, database2.toString());
 
 
         // Initialize Firebase Auth
@@ -169,7 +167,7 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, StudentLogin.class));
+            startActivity(new Intent(this, SignUpActivity.class));
             finish();
             return;
         } else {
@@ -184,19 +182,21 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
                 .build();
 
 
-
     }
 
-    private  int mLastSpinnerPosotion = 0;
+    private int mLastSpinnerPosotion = 0;
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if(mLastSpinnerPosotion ==i){
+        if (mLastSpinnerPosotion == i) {
             return;
         }
         mLastSpinnerPosotion = i;
-        Intent listViewIntent = new Intent(this, TakeQuizActivity.class);
-        startActivity(listViewIntent);
+//        Intent listViewIntent = new Intent(this, TakeQuizActivity.class);
+//        startActivity(listViewIntent);
+        mLastSpinnerPosotion = 0;
+        Intent quizDetailIntent = new Intent(this, QuizDetailActivity.class);
+        startActivity(quizDetailIntent);
     }
 
     @Override
@@ -218,15 +218,23 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 mUsername = ANONYMOUS;
-                Intent intent = new Intent(this, StudentLogin.class);
-                if(Build.VERSION.SDK_INT >= 11){
+                Intent intent = new Intent(this, SignUpActivity.class);
+                if (Build.VERSION.SDK_INT >= 11) {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                }
-                else{
+                } else {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 }
-                //  startActivity(new Intent(this, StudentLogin.class));
+                //  startActivity(new Intent(this, SignUpActivity.class));
                 startActivity(intent);
+                return true;
+            case R.id.home_menu:
+                Intent homeIntent = new Intent(getApplicationContext(), ClassListActivity.class);
+                startActivity(homeIntent);
+                return true;
+
+            case R.id.user_settings:
+                Intent settingsIntent = new Intent(getApplicationContext(), UserSettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -235,6 +243,8 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast toast = Toast.makeText(getApplicationContext(), "Connection Failed, unable to Authenticate", Toast.LENGTH_SHORT);
+        toast.show();
 
     }
 }
