@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,17 +16,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Asmamaw on 10/26/16.
  */
 
-public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
+public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
     Question[] questions = null;
-    AnsweredQuestionModel[] answeredQuestions1 = null;
+    QuestionModel[] questions1 = null;
 
     Context context;
 
@@ -47,25 +44,17 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
     private String mUsername;
     private SharedPreferences mSharedPreferences;
 
-    AnsweredQuestionModel question;
-    AnsweredQuestionModel answeredQuestion;
-    private Map<Integer,AnsweredQuestionModel> answeredLists;  //map of question number as key, and question as model
+    QuestionModel question;
 
 
-
-    public QuestionsAdapter3(Context context, AnsweredQuestionModel[] resource) {
+    public QuestionsAdapter(Context context, QuestionModel[] resource) {
         super(context, R.layout.question, resource);
         this.context = context;
-        this.answeredQuestions1 = resource;
-        answeredLists = new HashMap<>();
-        for(int i= 0; i < resource.length; i++){
-            answeredLists.put(i+1,resource[i]);
-
-        }
+        this.questions1 = resource;
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(R.layout.question, parent, false);
 //        convertView.setBottom(10);
@@ -77,8 +66,8 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
 
         }
 
-        question = new AnsweredQuestionModel();
-        final List data1 = new ArrayList<AnsweredQuestionModel>();
+        question = new QuestionModel();
+        final List data1 = new ArrayList<QuestionModel>();
 
 
         questionText = (TextView) convertView.findViewById(R.id.questionText);
@@ -118,13 +107,7 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
                 choiceD_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceE_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceF_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                correctAnsText.setText("You selected: A");
-                correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
-
-                if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("A");
-                }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
+                correctAnsText.setText("You selected: A");
 
 
             }
@@ -140,15 +123,7 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
                 choiceF_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceE_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceD_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                correctAnsText.setText("You selected: B");
-                correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
-
-                if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("B");
-                }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
-
-
+                correctAnsText.setText("You selected: B");
 
 
             }
@@ -162,14 +137,7 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
                 choiceD_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceE_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceF_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                correctAnsText.setText("You selected: C");
-                correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
-
-                if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("C");
-                }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
-
+                correctAnsText.setText("You selected: C");
 
 
             }
@@ -185,14 +153,7 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
                 choiceC_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                correctAnsText.setText("You selected: D");
-                correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
-
-                if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("D");
-                }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
-
+                correctAnsText.setText("You selected: D");
 
             }
         });
@@ -206,14 +167,7 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
                 choiceC_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                correctAnsText.setText("You selected: E");
-                correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
-
-                if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("E");
-                }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
-
+                correctAnsText.setText("You selected: E");
             }
         });
         choiceF_btn.setOnClickListener(new View.OnClickListener() {
@@ -225,12 +179,7 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
                 choiceC_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-                correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
-                if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("F");
-                }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
-
+                correctAnsText.setText("You selected: F");
             }
         });
 
@@ -252,31 +201,31 @@ public class QuestionsAdapter3 extends ArrayAdapter<AnsweredQuestionModel> {
         TextView choiceFLabel = (TextView) convertView.findViewById(R.id.choiceF);
 
 
-        questionView.setText(" " + answeredQuestions1[position].getQuestion());
-        if (answeredQuestions1[position].getChoices() != null) {
-            if (answeredQuestions1[position].getChoices().get("A") != null) {
-                choiceA.setText(answeredQuestions1[position].getChoices().get("A").toString());
+        questionView.setText(" " + questions1[position].getQuestion());
+        if (questions1[position].getChoices() != null) {
+            if (questions1[position].getChoices().get("A") != null) {
+                choiceA.setText(questions1[position].getChoices().get("A").toString());
             }
-            if (answeredQuestions1[position].getChoices().get("B") != null) {
-                choiceB.setText(answeredQuestions1[position].getChoices().get("B").toString());
+            if (questions1[position].getChoices().get("B") != null) {
+                choiceB.setText(questions1[position].getChoices().get("B").toString());
             }
-            if (answeredQuestions1[position].getChoices().get("C") != null) {
-                choiceC.setText(answeredQuestions1[position].getChoices().get("C").toString());
+            if (questions1[position].getChoices().get("C") != null) {
+                choiceC.setText(questions1[position].getChoices().get("C").toString());
                 choiceC.setVisibility(choiceC.VISIBLE);
                 choiceCLabel.setVisibility(choiceCLabel.VISIBLE);
             }
-            if (answeredQuestions1[position].getChoices().get("D") != null) {
-                choiceD.setText(answeredQuestions1[position].getChoices().get("D").toString());
+            if (questions1[position].getChoices().get("D") != null) {
+                choiceD.setText(questions1[position].getChoices().get("D").toString());
                 choiceD.setVisibility(choiceD.VISIBLE);
                 choiceDLabel.setVisibility(choiceDLabel.VISIBLE);
             }
-            if (answeredQuestions1[position].getChoices().get("E") != null) {
-                choiceE.setText(answeredQuestions1[position].getChoices().get("E").toString());
+            if (questions1[position].getChoices().get("E") != null) {
+                choiceE.setText(questions1[position].getChoices().get("E").toString());
                 choiceE.setVisibility(choiceE.VISIBLE);
                 choiceELabel.setVisibility(choiceELabel.VISIBLE);
             }
-            if (answeredQuestions1[position].getChoices().get("F") != null) {
-                choiceF.setText(answeredQuestions1[position].getChoices().get("F").toString());
+            if (questions1[position].getChoices().get("F") != null) {
+                choiceF.setText(questions1[position].getChoices().get("F").toString());
                 choiceF.setVisibility(choiceF.VISIBLE);
                 choiceFLabel.setVisibility(choiceFLabel.VISIBLE);
             }

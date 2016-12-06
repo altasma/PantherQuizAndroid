@@ -34,7 +34,7 @@ import java.util.Map;
 
 import static com.aclass.panther.uwm.pantheractive.MainActivity.ANONYMOUS;
 
-public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class TakeQuizActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     ListView questionListview;
     Question[] questions;   //array of questions for a quiz
     QuestionModel[] questions1;
@@ -107,7 +107,7 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
                     public void run() {
 
                         if (!isFinishing()) {
-                            new AlertDialog.Builder(TakeQuizActivity3.this)
+                            new AlertDialog.Builder(TakeQuizActivity.this)
                                     .setTitle("Submitting Quiz...")
                                     .setMessage("Are you sure you want to submit this quiz? ")
                                     .setCancelable(false)
@@ -313,7 +313,7 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
                                     }
                                     // List<QuestionModel> ls = new ArrayList<QuestionModel>();
                                     questionListview = (ListView) findViewById(R.id.questionListView);
-                                    adapter1 = new QuestionsAdapter(TakeQuizActivity3.this, questions1);
+                                    adapter1 = new QuestionsAdapter(TakeQuizActivity.this, questions1);
 
                                     questionListview.setAdapter(adapter1);
 

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_quiz_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.aclass.panther.uwm.pantheractive.QuizDetailActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewClassId"
+        android:text="Class ID: "
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentTop="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewQuizId"
+        android:text="Quiz ID:"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textViewClassId"
+        android:layout_toEndOf="@+id/textViewClassId"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/labelAvailableFrom"
+        android:text="Quiz Starts On: "
+        android:layout_below="@+id/textViewQuizId"
+        android:layout_marginBottom="30dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewDateFrom"
+        android:text="Date: "
+        android:visibility="gone"
+        android:layout_marginLeft="50dp"
+        android:layout_below="@+id/textViewQuizId"
+        android:layout_toRightOf="@+id/labelAvailableFrom"
+        android:layout_toEndOf="@+id/labelAvailableFrom"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewTimeFrom"
+        android:text="Time: "
+        android:layout_marginLeft="50dp"
+        android:layout_below="@+id/textViewQuizId"
+        android:layout_toRightOf="@+id/textViewDateFrom"
+        android:layout_toEndOf="@+id/textViewDateFrom"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/labelAvailableTo"
+        android:text="Quiz Ends On: "
+        android:layout_below="@+id/labelAvailableFrom"
+        android:layout_marginBottom="30dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewDateTo"
+        android:visibility="gone"
+        android:text="Date: "
+        android:layout_marginLeft="50dp"
+        android:layout_below="@+id/labelAvailableFrom"
+        android:layout_toRightOf="@+id/labelAvailableTo"
+        android:layout_toEndOf="@+id/labelAvailableTo"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewTimeTo"
+        android:text="Time: "
+        android:layout_marginLeft="50dp"
+        android:layout_below="@+id/labelAvailableFrom"
+        android:layout_toRightOf="@+id/textViewDateFrom"
+        android:layout_toEndOf="@+id/textViewDateFrom"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewIsAvailable"
+        android:text="ON/OFF"
+        android:layout_below="@+id/labelAvailableTo"
+        android:layout_marginBottom="30dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewIsTaken"
+        android:visibility="gone"
+        android:text="Taken/Not Taken"
+        android:layout_below="@+id/textViewIsAvailable"
+        android:layout_marginBottom="30dp"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextChallenge"
+        android:inputType="text"
+        android:hint="Enter Pass Code to Start the Quiz"
+
+        android:layout_below="@+id/textViewIsTaken"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonStartQuiz"
+        android:text="Start Quiz"
+        android:layout_below="@+id/editTextChallenge"
+        android:background="@color/colorFresh"
+        />
+
+</RelativeLayout>
