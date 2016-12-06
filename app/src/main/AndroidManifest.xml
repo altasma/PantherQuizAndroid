@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aclass.panther.uwm.pantheractive">
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -21,11 +23,13 @@
             <!-- </intent-filter> -->
         </activity>
         <activity android:name=".StudentLogin">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".StudentHome"
@@ -33,24 +37,58 @@
         <activity android:name=".NewClassRoom" />
         <activity android:name=".MultipleChoiceFactory" />
         <activity android:name=".TrueFalseFactory" />
-        <activity android:name=".ReportsStudentView" />
-        <activity
-            android:name=".SignUpActivity"
-            android:label="Sign Up" />
+        <activity android:name=".ReportsStudentViewActivity" />
+        <activity android:name=".SignUpActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".BaseActivity" />
         <activity
             android:name=".TakeQuizActivity"
-            android:label="Quiz  " />
-        <activity
-            android:name=".QuizActivity"
-            android:label="Quiz" />
+            android:label="@string/title_take_quiz_activity"
+            android:parentActivityName=".QuizDetailActivity" >
+            <meta-data
+
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".QuizDetailActivity"
+                />
+
+
+
+        </activity>
+        <activity android:name=".QuizActivity" />
         <activity
             android:name=".ClassListActivity"
-            android:label="Class List" />
+            android:label="@string/title_class_list_activity" />
         <activity
             android:name=".QuizListActivity"
-            android:label="Quiz List"></activity>
-        <activity android:name=".TakeQuestionActivity2"></activity>
+            android:label="@string/title_quiz_list_activity"
+            android:parentActivityName=".ClassListActivity"
+            />
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".QuizDetailActivity"
+            />
+
+        <activity
+            android:name=".QuizDetailActivity"
+            android:label="@string/title_quiz_detail_activity" />
+        <activity
+            android:name=".QuizReportByClassActivity"
+            android:label="@string/title_quiz_report_by_class_activity" />
+        <activity
+            android:name=".QuizQuestionsReportActivity"
+            android:label="@string/title_quiz_questions_report_activity" />
+        <activity
+            android:name=".UserSettingsActivity"
+            android:label="@string/title_user_settings_activity" />
+        <activity
+            android:name=".UserManualActvity"
+            android:label="@string/title_activity_user_manual_actvity" />
+        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
     </application>
 
 </manifest>

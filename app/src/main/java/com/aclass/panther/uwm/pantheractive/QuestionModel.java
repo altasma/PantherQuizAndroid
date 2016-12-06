@@ -1,7 +1,5 @@
 package com.aclass.panther.uwm.pantheractive;
 
-import android.util.Log;
-
 import java.util.HashMap;
 
 /**
@@ -11,12 +9,10 @@ import java.util.HashMap;
 public class QuestionModel {
     private String question;
     private String answer;
-//    private String[] choices;
-   // private ArrayList<String> choices;
-    private HashMap<String,String> choices;
 
-    public QuestionModel( String question, String answer, HashMap<String,String> choices) {
-        Log.i("INFO", "Inside QuestionMOdel class");
+    private HashMap<String, String> choices;
+
+    public QuestionModel(String question, String answer, HashMap<String, String> choices) {
         this.question = question;
         this.answer = answer;
         this.choices = choices;
@@ -24,7 +20,6 @@ public class QuestionModel {
 
     public QuestionModel() {
     }
-
 
 
     public void setQuestion(String question) {
@@ -35,11 +30,6 @@ public class QuestionModel {
         this.answer = answer;
     }
 
-//    public void setChoices(String[] choices) {
-//        this.choices = choices;
-//    }
-
-
 
     public String getQuestion() {
         return question;
@@ -49,19 +39,6 @@ public class QuestionModel {
         return answer;
     }
 
-//    public String[] getChoices() {
-//        return choices;
-//    }
-
-//    public ArrayList<String> getChoices() {
-//        return choices;
-//    }
-//
-//    public void setChoices(ArrayList<String> choices) {
-//        Log.i("INFO", "Inside QuestionMOdel class setChoices method");
-//
-//        this.choices = choices;
-//    }
 
     public HashMap<String, String> getChoices() {
         return choices;
@@ -74,11 +51,11 @@ public class QuestionModel {
 
     @Override
     public String toString() {
-        return "QuestionModel{" +
+        return
                 "question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
-                ", choices=" + choices +
-                '}';
+                        ", answer='" + answer + '\'' +
+                        ", choices=" + choices;
+
     }
 }
 

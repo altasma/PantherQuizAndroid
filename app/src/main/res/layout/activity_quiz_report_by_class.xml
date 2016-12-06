@@ -111,7 +111,7 @@
             android:layout_height="wrap_content"
             >
         </ListView>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -123,14 +123,26 @@
 
     <Button
         android:layout_weight="1"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="My Class List"
         android:background="@color/colorFresh"
         android:clickable="true"
-
         android:id="@+id/btnClassList"/>
-    </RelativeLayout>
+    <Button
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quiz List"
+        android:layout_marginLeft="5dp"
+        android:layout_toEndOf="@+id/btnClassList"
+        android:layout_toRightOf="@+id/btnClassList"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorInsructorMain"
+        android:clickable="true"
+        android:id="@+id/btnQuizList"/>
+</LinearLayout>
 
 
 </LinearLayout>

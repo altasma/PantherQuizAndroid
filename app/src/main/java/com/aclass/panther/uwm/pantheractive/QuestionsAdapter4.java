@@ -22,17 +22,15 @@ import java.util.List;
  * Created by Asmamaw on 10/26/16.
  */
 
-public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
+public class QuestionsAdapter4 extends ArrayAdapter<QuestionModel> {
     Question[] questions = null;
     QuestionModel[] questions1 = null;
 
     Context context;
 
     TextView questionNumber;
-
     TextView questionText;
     TextView choiceA, choiceB, choiceC, choiceD, choiceE, choiceF;
-    //  Button choiceA_btn,choiceB_btn, choiceC_btn;
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -40,14 +38,16 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
     private String TAG = "PantherQuiz ClassList Activity log";
 
     private GoogleApiClient mGoogleApiClient;
+
     public static final String ANONYMOUS = "anonymous";
+
     private String mUsername;
     private SharedPreferences mSharedPreferences;
 
     QuestionModel question;
 
 
-    public QuestionsAdapter(Context context, QuestionModel[] resource) {
+    public QuestionsAdapter4(Context context, QuestionModel[] resource) {
         super(context, R.layout.question, resource);
         this.context = context;
         this.questions1 = resource;
@@ -57,8 +57,6 @@ public class QuestionsAdapter extends ArrayAdapter<QuestionModel> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(R.layout.question, parent, false);
-//        convertView.setBottom(10);
-//        convertView.setHorizontalFadingEdgeEnabled(true);
         if (position % 2 == 0) {
             convertView.setBackgroundColor(Color.rgb(160, 198, 225));
         } else {

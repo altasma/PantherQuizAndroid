@@ -1,82 +1,94 @@
 package com.aclass.panther.uwm.pantheractive;
 
-import android.util.Log;
-
-import java.util.HashMap;
-
 /**
  * Created by Asmamaw on 10/27/16.
  */
 
 public class ClassRoomModel {
-    private String question;
-    private String answer;
-    //    private String[] choices;
-    // private ArrayList<String> choices;
-    private HashMap<String, String> choices;
-
-    public ClassRoomModel(String question, String answer, HashMap<String, String> choices) {
-        Log.i("INFO", "Inside QuestionMOdel class");
-        this.question = question;
-        this.answer = answer;
-        this.choices = choices;
-    }
+    private String id;
+    private String department;
+    private String name;
+    private String school;
+    private String term;
+    private String year;
 
     public ClassRoomModel() {
+
     }
 
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public ClassRoomModel(String id, String department, String name, String school, String term, String year) {
+        this.id = id;
+        this.department = department;
+        this.name = name;
+        this.school = school;
+        this.term = term;
+        this.year = year;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public String getId() {
+        return id;
     }
 
-//    public void setChoices(String[] choices) {
-//        this.choices = choices;
-//    }
-
-
-    public String getQuestion() {
-        return question;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getDepartment() {
+        return department;
     }
 
-//    public String[] getChoices() {
-//        return choices;
-//    }
-
-//    public ArrayList<String> getChoices() {
-//        return choices;
-//    }
-//
-//    public void setChoices(ArrayList<String> choices) {
-//        Log.i("INFO", "Inside QuestionMOdel class setChoices method");
-//
-//        this.choices = choices;
-//    }
-
-    public HashMap<String, String> getChoices() {
-        return choices;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
+    public String getName() {
+        return name;
+    }
 
-    public void setChoices(HashMap<String, String> choices) {
-        this.choices = choices;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getTerm() {
+        return term;
+    }
+
+    public void setTerm(String term) {
+        this.term = term;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     @Override
     public String toString() {
-        return "QuestionModel{" +
-                "question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
-                ", choices=" + choices +
-                '}';
+        return
+//                "id='" + id + '\'' +
+//                ", department='" + department + '\'' +
+//                ", name='" + name + '\'' +
+//                ", school='" + school + '\'' +
+//                ", term='" + term + '\'' +
+//                ", year='" + year ;
+                name;
+
+    }
+
+    public String print() {
+        return id + " " + name;
     }
 }
 

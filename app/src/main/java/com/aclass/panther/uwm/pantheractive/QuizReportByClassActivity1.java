@@ -19,10 +19,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class QuizReportByClassActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+
+/**
+ * Created by Asmamaw on 10/26/16.
+ */
+
+public class QuizReportByClassActivity1 extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
+
     public static final String ANONYMOUS = "anonymous";
 
     private Button buttonViewDetail;
@@ -37,7 +43,7 @@ public class QuizReportByClassActivity extends AppCompatActivity implements Goog
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.mipmap.ic_icon_tab);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
-        setContentView(R.layout.activity_quiz_report_by_class);
+        setContentView(R.layout.activity_quiz_report_by_class_copy);
 
         buttonViewDetail = (Button) findViewById(R.id.quiz1Detail);
         buttonViewDetail.setOnClickListener(new View.OnClickListener() {
@@ -51,6 +57,7 @@ public class QuizReportByClassActivity extends AppCompatActivity implements Goog
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, SignUpActivity.class));
@@ -73,7 +80,6 @@ public class QuizReportByClassActivity extends AppCompatActivity implements Goog
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -91,7 +97,6 @@ public class QuizReportByClassActivity extends AppCompatActivity implements Goog
                 } else {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 }
-                //  startActivity(new Intent(this, SignUpActivity.class));
                 startActivity(intent);
                 return true;
             case R.id.home_menu:
@@ -102,6 +107,11 @@ public class QuizReportByClassActivity extends AppCompatActivity implements Goog
                 Intent settingsIntent = new Intent(getApplicationContext(), UserSettingsActivity.class);
                 startActivity(settingsIntent);
                 return true;
+            case R.id.help_menu:
+                Intent helpIntent = new Intent(getApplicationContext(), UserManualActvity.class);
+                startActivity(helpIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -112,9 +122,10 @@ public class QuizReportByClassActivity extends AppCompatActivity implements Goog
         Toast toast = Toast.makeText(getApplicationContext(), "Connection Failed, unable to Authenticate", Toast.LENGTH_SHORT);
         toast.show();
     }
+
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(this,QuizListActivity.class);
+        Intent intent = new Intent(this, QuizListActivity.class);
         startActivity(intent);
         finish();
 

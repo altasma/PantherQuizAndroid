@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -34,11 +35,14 @@ import java.util.Map;
 
 import static com.aclass.panther.uwm.pantheractive.MainActivity.ANONYMOUS;
 
-public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+
+/**
+ * Created by Asmamaw on 10/26/16.
+ */
+
+public class TakeQuizActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     ListView questionListview;
-    Question[] questions;   //array of questions for a quiz
-    QuestionModel[] questions1;
-    List<QuestionModel> questionList;
+    AnsweredQuestionModel[] questions1;
 
     private String mUsername;
     private String mPhotoUrl;
@@ -52,17 +56,22 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
-    private Button submitButton;
+    private Button submitButton, saveButton;
+    private TextView classIdText, quizIdText;
     private String TAG = "PantherQuiz TakeQuiz Activity log";
 
     private String isAvailable = "";
+    private String isCompleted = "";
+    private String isInprogress = "";
+    private String quizName = "";
+    private String quizId = "";
     private String challenge = "";
 
     //Intent messsage references
-    private String extra_quiz_id;
-    private String extra_class_id;
-
-    private Map<Integer,AnsweredQuestionModel> answeredLists;  //map of question number as key, and question as model
+    private String extra_quiz_id, extra_quiz_name;
+    private String extra_class_id, extra_class_name;
+    private String studentId; //used for adding quizzes as a key
+    private Map<Integer, AnsweredQuestionModel> answeredLists;  //map of question number as key, and question as model
 
 
     @Override
@@ -73,53 +82,181 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         //setContentView(R.layout.question);
         setContentView(R.layout.activity_take_quiz);
+        classIdText = (TextView) findViewById(R.id.classIdText);
+        quizIdText = (TextView) findViewById(R.id.quizIdText);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        studentId = mFirebaseUser.getEmail().replace("@", "-");
+        studentId = studentId.replace(".", "dot");
+
+        /*
+        Log.i("studentId", studentId);
         Log.i("mFirebasAuth:", mFirebaseAuth.toString());
         Log.i("mFirebaseUser:", mFirebaseUser.getEmail());
+        */
 
         answeredLists = new HashMap<>();
-        Bundle class_extras = getIntent().getExtras();
-        Log.i("extrasTakeQuiz, ", class_extras.toString());
+        final Bundle class_extras = getIntent().getExtras();
+        // Log.i("extrasTakeQuiz, ", class_extras.toString());
         if (class_extras != null) {
-            extra_quiz_id = class_extras.getString("EXTRA_QUIZ_ID");
-            Log.i("extra_QUIZ_ID,", extra_quiz_id);
-            extra_class_id = class_extras.getString("EXTRA_CLASS_ID");
-            Log.i("extr_class_id,", extra_class_id);
+            if (class_extras.get("EXTRA_QUIZ_ID") != null) {
+                extra_quiz_id = class_extras.getString("EXTRA_QUIZ_ID");
+                // Log.i("extra_QUIZ_ID,", extra_quiz_id);
+            }
+            if (class_extras.get("EXTRA_CLASS_ID") != null) {
+                extra_class_id = class_extras.getString("EXTRA_CLASS_ID");
+                // Log.i("extr_class_id,", extra_class_id);
+            }
+            if (class_extras.getString("EXTRA_CLASS_NAME") != null) {
+                extra_class_name = class_extras.getString("EXTRA_CLASS_NAME");
+                classIdText.setText("Class- " + extra_class_name);
+                // Log.i("className", extra_class_name);
+            }
+            if (class_extras.get(("EXTRA_QUIZ_NAME")) != null) {
+                extra_quiz_name = class_extras.getString("EXTRA_QUIZ_NAME");
+                quizIdText.setText("Quiz- " + extra_quiz_name);
+                // Log.i("quizName", extra_quiz_name);
+            }
 
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         if (toolbar != null) {
             toolbar.setLogo(R.mipmap.ic_launcher);   //uses the ic_launcher icon as title log
-            Log.i("ToolBar..", "toolBar is not null");
         }
-        Log.i("ToolBarisnull..", "toolBar is null");
 
-        questionList = new ArrayList<>();
         submitButton = (Button) findViewById(R.id.submitQuizBtn);
+        saveButton = (Button) findViewById(R.id.saveBtn);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                try {
+                    DatabaseReference quizRef = mDatabase.child("studentsQuiz").child(extra_class_id)
+                            .child(studentId).child(extra_quiz_id);
+
+                    // Log.i("Save is Completed: ", " " + isCompleted);
+                    if (isCompleted != null && isCompleted.equals("true")) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Quiz has already been submitted.", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    } else {
+
+                        quizRef.child("isInprogress").setValue("true");
+                        quizRef.child("isCompleted").setValue("false");
+                        quizRef.child("quizId").setValue(quizId);
+                        quizRef.child("quizName").setValue(quizName);
+                        quizRef.child("score").setValue(0);
+                        //individually add all the questions
+                        for (int k = 0; k < adapter1.getCount(); k++) {
+                            //Log.i("on Submit Adapater[, " + k + "]: ", adapter1.getItem(k).toString());
+                            String questionKey = quizRef.child("questions").push().getKey(); //may use the original key from the quizzes node??
+                            quizRef.child("questions").child(questionKey).setValue(adapter1.getItem(k));
+                        }
+                        Toast.makeText(getApplicationContext(), "Quiz saved successfully.", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (Exception e) {
+                    //Log.i("Database Error! ", "Exception in writing to the database." + e.getMessage());
+                    Toast toast = Toast.makeText(getApplicationContext(), "Database Error, please try again", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+
+
+                }
+            }
+        });
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Log.i("OnCSubmisdfsd,:", "asdsadf");
+                // Log.i("Before Submit on Success,datapter1 size ", adapter1.getCount() + "");
+                int studCorrectAnsCount = 0;
+                int unAttemptedQuestCount = 0;
+                int totalQuestions = adapter1.getCount();
+                for (int k = 0; k < adapter1.getCount(); k++) {
+                    AnsweredQuestionModel studQuestionOnSubmit = adapter1.getItem(k);
+                    if (studQuestionOnSubmit.getStudentAnswer() != null) {
+                        //student attempted the question
+                        if (studQuestionOnSubmit.getStudentAnswer().equals(studQuestionOnSubmit.getAnswer())) {
+                            studCorrectAnsCount++; // student get correct this question
+                        } else {
+                            // do nothing
+                        }
+                    } else {
+                        unAttemptedQuestCount++; //
+                    }//end of if submittedQuestion.getStudAnswer!= null
+
+
+                    //  Log.i("on Submit AdapaterBefroe[, " + k + "]: ", studQuestionOnSubmit.toString());
+                }//end of for loop
+                double scoreInPercent = (float) studCorrectAnsCount / (float) totalQuestions;
+                scoreInPercent = (scoreInPercent * 100.0);
+                String str = String.format("%1.2f", scoreInPercent); // rounding to 2 decimal place
+
+                scoreInPercent = Double.valueOf(str);
+
+                /*
+                Log.i("scorePercent: ", scoreInPercent + "");
+                Log.i("studeCorrectCount:", studCorrectAnsCount + "");
+                Log.i("unattemptedCount:", unAttemptedQuestCount + "");
+                Log.i("totalQuestion:", totalQuestions + "");
+                */
+
+                final int unAttempted = unAttemptedQuestCount;
+                final double scorePercent = scoreInPercent;
+                final int correctCount = studCorrectAnsCount;
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 
                         if (!isFinishing()) {
-                            new AlertDialog.Builder(TakeQuizActivity3.this)
+                            new AlertDialog.Builder(TakeQuizActivity.this)
                                     .setTitle("Submitting Quiz...")
-                                    .setMessage("Are you sure you want to submit this quiz? ")
+                                    .setMessage("" + unAttempted + " Unattempted Questions, are you sure you want to submit it?")
                                     .setCancelable(false)
                                     .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Toast toast = Toast.makeText(getApplicationContext(), "Quiz Submitted Sucessfully!", Toast.LENGTH_SHORT);
-                                            toast.setGravity(Gravity.CENTER, 0, 0);
-                                            toast.show();
-                                            Intent intent = new Intent(getApplicationContext(), QuizReportByClassActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                                            try {
+                                                // Log.i("Submit on Success,datapter1 size ", adapter1.getCount() + "");
+
+                                                DatabaseReference quizRef = mDatabase.child("studentsQuiz").child(extra_class_id)
+                                                        .child(studentId).child(extra_quiz_id);
+
+                                                // Log.i("SubisCompleted: ", isCompleted);
+
+                                                quizRef.child("score").setValue(scorePercent);
+
+                                                quizRef.child("isInprogress").setValue("false");
+                                                quizRef.child("isCompleted").setValue("true");
+                                                quizRef.child("quizId").setValue(quizId);
+                                                quizRef.child("quizName").setValue(quizName);
+                                                //individually add all the questions
+                                                for (int k = 0; k < adapter1.getCount(); k++) {
+                                                    //Log.i("on Submit Adapater[, " + k + "]: ", adapter1.getItem(k).toString());
+                                                    String questionKey = quizRef.child("questions").push().getKey(); //may use the original key from the quizzes node??
+                                                    quizRef.child("questions").child(questionKey).setValue(adapter1.getItem(k));
+                                                }
+
+
+                                                Toast toast = Toast.makeText(getApplicationContext(), "Quiz Submitted Sucessfully! SCORE: " + scorePercent + "%", Toast.LENGTH_LONG);
+                                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                                toast.show();
+                                                Intent intent = new Intent(getApplicationContext(), QuizReportByClassActivity.class);
+                                                intent.putExtra("EXTRA_CLASS_ID", extra_class_id);
+                                                intent.putExtra("EXTRA_CLASS_NAME", extra_class_name);
+
+                                                startActivity(intent);
+
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                Toast toast = Toast.makeText(getApplicationContext(), "Database  connection error! " + scorePercent + "%", Toast.LENGTH_SHORT);
+                                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                                toast.show();
+
+                                            }
                                         }
                                     }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
                                 @Override
@@ -159,7 +296,7 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
 
-        final List data1 = new ArrayList<QuestionModel>();
+        final List data1 = new ArrayList<AnsweredQuestionModel>(); //
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -179,7 +316,10 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
                         Log.i("IS_TAKEN:", dataSnapshot.child("isTaken").getValue().toString());
 
                         isAvailable = dataSnapshot.child("isAvailable").getValue().toString();
+                        Log.i("isAvala:", isAvailable);
                         challenge = dataSnapshot.child("challenge").getValue().toString();
+                        quizId = dataSnapshot.child("quizId").getValue().toString();
+                        quizName = dataSnapshot.child("quizName").getValue().toString();
                     } catch (Exception e) {
                         Log.i("Exception in querrying quiz details", e.getMessage());
 
@@ -210,7 +350,7 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
                                     for (DataSnapshot classDataSnapShot : dataSnapshot.getChildren()) {
                                         // data1.clear();
 
-                                        QuestionModel q1 = new QuestionModel();
+                                        AnsweredQuestionModel q1 = new AnsweredQuestionModel();
                                         try {
                                             Log.i(TAG + "dsChildred", classDataSnapShot.getChildren().iterator().next().getValue().toString());
                                             Log.i(TAG + "DSP get value: ", classDataSnapShot.getValue().toString());
@@ -223,7 +363,6 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
                                             Log.i(TAG + "Choices: ", classDataSnapShot.child("choices").getValue().toString());
 
                                             HashMap chm = new HashMap<String, String>();
-                                            //  chm.put("Achoice", classDataSnapShot.child("choices").getValue());
 
                                             q1.setAnswer(classDataSnapShot.child("answer").getValue().toString());
                                             q1.setQuestion(classDataSnapShot.child("question").getValue().toString());
@@ -266,7 +405,6 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
 
                                             }
 
-
                                             q1.setChoices(chm);
 
 
@@ -279,41 +417,33 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
 
                                         Log.i(TAG + "SnapShotto string", classDataSnapShot.toString());
 
-//                    if(classDataSnapShot.getKey().equals("choices")){
-//                        Log.i("child tostring key", classDataSnapShot.getKey());
-////                        QuestionModel q1 = new QuestionModel();
-//                        HashMap nhm = new HashMap();
-//                        nhm.put("A",classDataSnapShot.getValue().toString());
-//                        q1.setChoices(nhm);
-//                        Log.i("Q1 is ", q1.getChoices().toString());
-//                        Log.i("Q1", q1.toString());
-//
-//                    }
-//                    else if(classDataSnapShot.getKey().equals("question")){
-//                        q1.setQuestion(classDataSnapShot.getValue().toString());
-//                    }
-//                    else if(classDataSnapShot.getKey().equals("answer")){
-//                        q1.setAnswer(classDataSnapShot.getValue().toString());
-//                    }
-//                    else {
-//
-//                    }
-                                        // QuestionModel q  = classDataSnapShot.getValue(QuestionModel.class);
+
                                         data1.add(q1);
                                         Log.i(TAG + "After add1 q1 is", q1.toString());
                                         Log.i(TAG + "After add1 data1 is ", data1.get(0).toString());
                                     }
-                                    // adapter1.notifyDataSetChanged();
                                     Log.i("Size of Data1", " " + data1.size());
-                                    QuestionModel[] questions1 = new QuestionModel[data1.size()];
+                                    AnsweredQuestionModel[] questions1 = new AnsweredQuestionModel[data1.size()];
                                     data1.toArray(questions1);
                                     Log.i("Size of questions1 : ", questions1.length + "");
+                                    if (questions1.length <= 0) {
+                                        Toast.makeText(getApplicationContext(), "Empty Quiz.", Toast.LENGTH_LONG).show();
+                                        Intent backToQuizDetail = new Intent(getApplicationContext(), QuizDetailActivity.class);
+                                        backToQuizDetail.putExtra("EXTRA_QUIZ_ID", extra_quiz_id);
+                                        backToQuizDetail.putExtra("EXTRA_CLASS_ID", extra_class_id);
+                                        backToQuizDetail.putExtra("EXTRA_CLASS_NAME", extra_class_name);
+                                        if (backToQuizDetail != null) {
+                                            startActivity(backToQuizDetail);
+                                            finish();
+
+                                        }
+                                    }
                                     for (int i = 0; i < questions1.length; i++) {
                                         Log.i(i + "question: ", questions1[i].toString());
                                     }
                                     // List<QuestionModel> ls = new ArrayList<QuestionModel>();
                                     questionListview = (ListView) findViewById(R.id.questionListView);
-                                    adapter1 = new QuestionsAdapter(TakeQuizActivity3.this, questions1);
+                                    adapter1 = new QuestionsAdapter(TakeQuizActivity.this, questions1);
 
                                     questionListview.setAdapter(adapter1);
 
@@ -345,199 +475,6 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
             }
         });
 
-
-//            mDatabase.child("users/jFWwvImyV1Ului5UV2dGy4sdmdB2/classRooms/-KVQyXok2xJvO-JuqWpr/quizzes/-KVQydF7CQWGg0QZH1v8/questions")
-//                    .addValueEventListener(new ValueEventListener() {
-//                        @Override
-//                        public void onDataChange(DataSnapshot dataSnapshot) {
-//                            data1.clear();
-//
-//                            for (DataSnapshot classDataSnapShot : dataSnapshot.getChildren()) {
-//                                // data1.clear();
-//
-//                                QuestionModel q1 = new QuestionModel();
-//                                try {
-//                                    Log.i(TAG + "dsChildred", classDataSnapShot.getChildren().iterator().next().getValue().toString());
-//                                    Log.i(TAG + "DSP get value: ", classDataSnapShot.getValue().toString());
-//                                    DatabaseReference ref = classDataSnapShot.getRef();
-//                                    Log.i(TAG + "Question db:", ref.child("question").getDatabase().toString());
-//                                    Log.i(TAG + "Ref is:", ref.toString());
-//                                    Log.i(TAG + "Ref answer:", ref.child("answer").getKey());
-//                                    Log.i(TAG + "Answer: ", classDataSnapShot.child("answer").getValue().toString());
-//                                    Log.i(TAG + "Question: ", classDataSnapShot.child("question").getValue().toString());
-//                                    Log.i(TAG + "Choices: ", classDataSnapShot.child("choices").getValue().toString());
-//
-//                                    HashMap chm = new HashMap<String, String>();
-//                                    //  chm.put("Achoice", classDataSnapShot.child("choices").getValue());
-//
-//                                    q1.setAnswer(classDataSnapShot.child("answer").getValue().toString());
-//                                    q1.setQuestion(classDataSnapShot.child("question").getValue().toString());
-//                                    Log.i("CHOICES....", classDataSnapShot.child("choices").getChildrenCount() + "");
-//                                    long numOfChoices = classDataSnapShot.child("choices").getChildrenCount();
-//                                    if (numOfChoices == 2) {
-//                                        chm.put("A", classDataSnapShot.child("choices").child("A").getValue());
-//                                        chm.put("B", classDataSnapShot.child("choices").child("B").getValue());
-//
-//                                    }
-//                                    if (numOfChoices == 3) {
-//                                        chm.put("A", classDataSnapShot.child("choices").child("A").getValue());
-//                                        chm.put("B", classDataSnapShot.child("choices").child("B").getValue());
-//                                        chm.put("C", classDataSnapShot.child("choices").child("C").getValue());
-//
-//
-//                                    }
-//                                    if (numOfChoices == 4) {
-//                                        chm.put("A", classDataSnapShot.child("choices").child("A").getValue());
-//                                        chm.put("B", classDataSnapShot.child("choices").child("B").getValue());
-//                                        chm.put("C", classDataSnapShot.child("choices").child("C").getValue());
-//                                        chm.put("D", classDataSnapShot.child("choices").child("D").getValue());
-//
-//
-//                                    }
-//                                    if (numOfChoices == 5) {
-//                                        chm.put("A", classDataSnapShot.child("choices").child("A").getValue());
-//                                        chm.put("B", classDataSnapShot.child("choices").child("B").getValue());
-//                                        chm.put("C", classDataSnapShot.child("choices").child("C").getValue());
-//                                        chm.put("D", classDataSnapShot.child("choices").child("D").getValue());
-//                                        chm.put("E", classDataSnapShot.child("choices").child("E").getValue());
-//                                    }
-//                                    if (numOfChoices == 6) {
-//                                        chm.put("A", classDataSnapShot.child("choices").child("A").getValue());
-//                                        chm.put("B", classDataSnapShot.child("choices").child("B").getValue());
-//                                        chm.put("C", classDataSnapShot.child("choices").child("C").getValue());
-//                                        chm.put("D", classDataSnapShot.child("choices").child("D").getValue());
-//                                        chm.put("E", classDataSnapShot.child("choices").child("E").getValue());
-//                                        chm.put("F", classDataSnapShot.child("choices").child("F").getValue());
-//
-//                                    }
-//
-//
-//                                    q1.setChoices(chm);
-//
-//
-//                                    //  q1 = (QuestionModel) classDataSnapShot.getValue();
-//                                    Log.i(TAG + "q1 :", q1.toString());
-//                                } catch (Exception e) {
-//                                    Log.i(TAG + "Eccveption", e.getMessage());
-//                                }
-//
-//
-//                                Log.i(TAG + "SnapShotto string", classDataSnapShot.toString());
-//
-////                    if(classDataSnapShot.getKey().equals("choices")){
-////                        Log.i("child tostring key", classDataSnapShot.getKey());
-//////                        QuestionModel q1 = new QuestionModel();
-////                        HashMap nhm = new HashMap();
-////                        nhm.put("A",classDataSnapShot.getValue().toString());
-////                        q1.setChoices(nhm);
-////                        Log.i("Q1 is ", q1.getChoices().toString());
-////                        Log.i("Q1", q1.toString());
-////
-////                    }
-////                    else if(classDataSnapShot.getKey().equals("question")){
-////                        q1.setQuestion(classDataSnapShot.getValue().toString());
-////                    }
-////                    else if(classDataSnapShot.getKey().equals("answer")){
-////                        q1.setAnswer(classDataSnapShot.getValue().toString());
-////                    }
-////                    else {
-////
-////                    }
-//                                // QuestionModel q  = classDataSnapShot.getValue(QuestionModel.class);
-//                                data1.add(q1);
-//                                Log.i(TAG + "After add1 q1 is", q1.toString());
-//                                Log.i(TAG + "After add1 data1 is ", data1.get(0).toString());
-//                            }
-//                            // adapter1.notifyDataSetChanged();
-//                            Log.i("Size of Data1", " " + data1.size());
-//                            QuestionModel[] questions1 = new QuestionModel[data1.size()];
-//                            data1.toArray(questions1);
-//                            Log.i("Size of questions1 : ", questions1.length + "");
-//                            for (int i = 0; i < questions1.length; i++) {
-//                                Log.i(i + "question: ", questions1[i].toString());
-//                            }
-//                            // List<QuestionModel> ls = new ArrayList<QuestionModel>();
-//                            questionListview = (ListView) findViewById(R.id.questionListView);
-//                            adapter1 = new QuestionsAdapter(TakeQuizActivity.this, questions1);
-//
-//                            questionListview.setAdapter(adapter1);
-//
-//
-//                        }
-//
-//
-//                        @Override
-//                        public void onCancelled(DatabaseError databaseError) {
-//                            System.err.println("Listener was cancelled");
-//
-//                        }
-//                    });
-
-
-//        List<QuestionModel> ls = new ArrayList<QuestionModel>();
-//        questionListview = (ListView) findViewById(R.id.questionListView);
-        // questions = new Question[4];
-        // questions1 = new QuestionModel[4];
-//        for(int i = 0; i < questions.length;i++){
-////            List<QuestionModel> ls = new ArrayList<QuestionModel>();
-//            HashMap hs = new HashMap<String,String>();
-//            hs.put("A","A one");
-//            hs.put("B", "B one");
-//          //  questions1[i] = new QuestionModel("A", "Question one",hs);
-//          //  ls.add(new QuestionModel("First Question", "A", hs));
-//            //questions[i]=new Question();
-////            if(i == 2){
-////                String[] choices = {"Yes", "No","Maybe"};
-////                questions[i] = new Question("qustion from java", 4,choices,"A" );
-////            }
-//        }
-//        QuestionModel[] questions1 = new QuestionModel[ls.size()];
-//        ls.toArray(questions1);
-
-//        QuestionModel[] questions1 = new QuestionModel[data1.size()];
-//        data1.toArray(questions1);
-//        for(int i = 0; i < questions1.length; i ++) {
-//            Log.i(TAG + " : questions1[i]", questions1[i].toString());
-//        }
-
-
-        // Log.i(TAG,questions[2].getQuestionText());
-//        questions[0] = new Question();
-//        questions[1] = new Question();
-//        questions[2] = new Question();
-//        questions[3] = new Question();
-        //  adapter = new QuestionsAdapter(this, questions);
-        //  QuestionModel[] q = new QuestionModel[questionList.size()];
-        // q = questionList.toArray(q);
-//        Log.i(TAG, "" + q.length);
-//        for(int i = 0; i <q.length; i++){
-//            Log.i("TAG", q[i].toString());
-//        }
-
-//        adapter = new QuestionsAdapter(this, questions1);
-//
-//        questionListview.setAdapter(adapter);
-
-
-//        Log.i(TAG,mDatabase.toString());
-//        Log.i("Database Refffffff", "Hello1");
-
-
-        String myUserId = mFirebaseUser.getUid();
-//        questions[0].setQuestionText("Question from Java");
-
-
-//         mDatabase.child("users").child("BLhPQjoeATfJUJVWjel4u35k3O33").
-//                child("classRooms").child("-KTUij2r-dyM5VVS8FQY").child("quizzes").child("-KTUj3fbboFRh2MX9KWZ")
-//                .child("questions")
-//                .orderByChild("question").addListenerForSingleValueEvent(valueEventListener);
-        //  Log.i("Database Refffffff", "Hello2");
-        // Log.i("Database Refffffff", mDatabase.toString());
-
-//        myTopPostsQuery.addChildEventListener(new ChildEventListener() {
-//            // TODO: implement the ChildEventListener methods as documented above
-//            // ...
-//        });
     }
 
 
@@ -548,52 +485,4 @@ public class TakeQuizActivity3 extends AppCompatActivity implements GoogleApiCli
 
     }
 
-    ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            Log.i("TAG", "Iiiinnnnssssidddddeeee onDataChangeSnaphost");
-            if (dataSnapshot.getChildrenCount() == 0) {
-                Toast.makeText(getApplicationContext(), "Empty Quiz", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            for (DataSnapshot questionsSnapshot : dataSnapshot.getChildren()) {
-                Log.i("INFO", questionsSnapshot.toString() + " KEY " + questionsSnapshot.getKey());
-                Log.i(TAG, "Afterrr the log inside for loop");
-
-                QuestionModel queston = questionsSnapshot.getValue(QuestionModel.class);
-                QuestionModel question1 = questionsSnapshot.getValue(QuestionModel.class);
-                Log.i(TAG, "After question is initializes inside the for loop");
-                Log.i(TAG, "" + questionsSnapshot.getKey().charAt(1));
-                char i = questionsSnapshot.getKey().charAt(1);
-                Log.i("TAG of i", "" + i);
-
-                // String[] cho = {question1.getChoices().get("A"), question1.getChoices().get("B"), question1.getChoices().get("C")};
-                //questions[i] = new Question(question1.getQuestion(), 2, cho, question1.getAnswer());
-                Log.i(TAG, "Starting toString....");
-                Log.i(TAG, question1.getQuestion());
-                Log.i(TAG, question1.getAnswer());
-                Log.i(TAG, question1.getChoices().toString());
-                Log.i(TAG, "Finishing toString....");
-
-
-//                bgl.setBgl_key(messageSnapshot.getKey());
-                questionList.add(queston);
-                Log.i(TAG, "Before updateListZView() is called");
-                updateListView();
-
-            }
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    };
-
-    private void updateListView() {
-        Log.i("TAG", "Inside update list view");
-        adapter1.notifyDataSetChanged();
-        questionListview.invalidate();
-    }
 }

@@ -67,11 +67,8 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
 
         viewClassId = (TextView) findViewById(R.id.textViewClassId);
         viewQuizId = (TextView) findViewById(R.id.textViewQuizId);
-        //  viewDateFrom = (TextView) findViewById(R.id.textViewDateFrom);
-        //  viewDateTo = (TextView) findViewById(R.id.textViewDateTo);
         viewTimeFrom = (TextView) findViewById(R.id.textViewTimeFrom);
         viewTimeto = (TextView) findViewById(R.id.textViewTimeTo);
-
         viewIsAvailable = (TextView) findViewById(R.id.textViewIsAvailable);
         viewIsTaken = (TextView) findViewById(R.id.textViewIsTaken);
 
@@ -99,21 +96,20 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-//        mDatabase.child("classes/quizzes/")
-        mDatabase.child("users/jFWwvImyV1Ului5UV2dGy4sdmdB2/classRooms/-KVQyXok2xJvO-JuqWpr/quizzes/-KVQydF7CQWGg0QZH1v8/").addValueEventListener(new ValueEventListener() {
+
+        mDatabase.child("users/jFWwvImyV1Ului5UV2dGy4sdmdB2/classRooms/-KVQyXok2xJvO-JuqWpr/" +
+                "quizzes/-KVQydF7CQWGg0QZH1v8/").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                /*
                 Log.i("CHALLENGE: ", dataSnapshot.child("challenge").getValue().toString());
-                //  Log.i("END_DATE:", dataSnapshot.child("endDate").getValue().toString());
                 Log.i("END_TIME:", dataSnapshot.child("endTime").getValue().toString());
-                // Log.i("START_DATE:", dataSnapshot.child("startDate").getValue().toString());
                 Log.i("START_TIME:", dataSnapshot.child("startTime").getValue().toString());
                 Log.i("QUIZ_ID:", dataSnapshot.child("quizId").getValue().toString());
                 Log.i("IS_EXPIRED:", dataSnapshot.child("isExpired").getValue().toString());
                 Log.i("IS_TAKEN:", dataSnapshot.child("isTaken").getValue().toString());
+                */
 
-                //   startDate = dataSnapshot.child("startDate").getValue().toString();
-                //  endDate = dataSnapshot.child("endDate").getValue().toString();
                 startTime = dataSnapshot.child("startTime").getValue().toString();
                 endTime = dataSnapshot.child("endTime").getValue().toString();
                 startTimePeriod = dataSnapshot.child("startTimePeriod").getValue().toString();
@@ -127,8 +123,7 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
 
 
                 viewQuizId.setText(dataSnapshot.child("quizId").getValue().toString());
-                //  viewDateFrom.setText(startDate);
-                //  viewDateTo.setText(endDate);
+
                 viewTimeFrom.setText(startTime);
                 viewTimeto.setText(endTime);
                 if (dataSnapshot.child("isAvailable").getValue().toString().equals("true")) {
@@ -140,7 +135,6 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
                     buttonStartQuiz.setEnabled(false);
 
                 }
-                //   viewIsTaken.setText(dataSnapshot.child("isTaken").getValue().toString());
 
             }
 
@@ -203,7 +197,6 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
 
                         } else {
                             Toast toast = Toast.makeText(getApplicationContext(), "Wrong Quiz Pass Code", Toast.LENGTH_SHORT);
-//                            toast.setGravity(Gravity.BOTTOM, 0, 0);
                             toast.show();
 
                         }
@@ -211,7 +204,6 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
 
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(), "Quiz is not available at this time", Toast.LENGTH_SHORT);
-//                        toast.setGravity(Gravity.BOTTOM, 0, 0);
                         toast.show();
                     }
                 } catch (Exception e) {
@@ -232,7 +224,6 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -250,7 +241,6 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
                 } else {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 }
-                //  startActivity(new Intent(this, SignUpActivity.class));
                 startActivity(intent);
                 return true;
             case R.id.home_menu:
@@ -261,6 +251,11 @@ public class ClassDetailActivity extends AppCompatActivity implements GoogleApiC
                 Intent settingsIntent = new Intent(getApplicationContext(), UserSettingsActivity.class);
                 startActivity(settingsIntent);
                 return true;
+            case R.id.help_menu:
+                Intent helpIntent = new Intent(getApplicationContext(), UserManualActvity.class);
+                startActivity(helpIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

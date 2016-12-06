@@ -10,17 +10,32 @@
     android:background="@color/colorInsructorMain"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.aclass.panther.uwm.pantheractive.QuizListActivity">
+
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/classTitle"
+        android:text=""
+        android:textSize="25sp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/quizTitle"
         android:text="Quiz List"
-        android:textSize="20sp"
+        android:textSize="25sp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_toEndOf="@+id/classTitle"
+        android:layout_toRightOf="@+id/classTitle"
         android:layout_marginBottom="5dp"
         android:textStyle="bold"/>
     <Spinner
-        android:layout_below="@+id/quizTitle"
-        android:background="@color/colorInsructorMain"
+        android:layout_below="@+id/classTitle"
+        android:background="@android:drawable/btn_dropdown"
         android:layout_marginBottom="10dp"
         android:id="@+id/quizList_spinner"
         android:layout_width="fill_parent"

@@ -8,12 +8,8 @@ import android.widget.BaseAdapter;
  * Created by Asmamaw on 10/27/16.
  */
 
-public class QuestionListAdapter<T> extends BaseAdapter{
+public class QuestionListAdapter<T> extends BaseAdapter {
 
-//    private final Class<T> mModelClass;
-//    private int mLayout;
-//    protected Activity mActivity;
-//    FirebaseArray mSnapshots;
 
     @Override
     public int getCount() {

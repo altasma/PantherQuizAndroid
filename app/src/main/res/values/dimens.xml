@@ -9,4 +9,7 @@
     <dimen name="field_width_standard">160dp</dimen>
     <dimen name="choices_left_margin">10dp</dimen>
     <dimen name="textSize_choices">15sp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +31,7 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
     Context context;
 
     TextView questionNumber;
-
     TextView questionText;
-   // TextView choiceA, choiceB, choiceC, choiceD, choiceE, choiceF;
-    //  Button choiceA_btn,choiceB_btn, choiceC_btn;
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -43,14 +39,16 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
     private String TAG = "PantherQuiz ClassList Activity log";
 
     private GoogleApiClient mGoogleApiClient;
+
     public static final String ANONYMOUS = "anonymous";
+
     private String mUsername;
     private SharedPreferences mSharedPreferences;
 
     AnsweredQuestionModel question;
     AnsweredQuestionModel answeredQuestion;
-    private Map<Integer,AnsweredQuestionModel> answeredLists;  //map of question number as key, and question as model
 
+    private Map<Integer, AnsweredQuestionModel> answeredLists;  //map of question number as key, and question as model
 
 
     public QuestionsAdapterBeforeFinal(Context context, AnsweredQuestionModel[] resource) {
@@ -58,21 +56,17 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
         this.context = context;
         this.answeredQuestions1 = resource;
         answeredLists = new HashMap<>();
-        for(int i= 0; i < resource.length; i++){
-            answeredLists.put(i+1,resource[i]);
-           // resource[i].setQuestion(resource[i].getQuestion()+ " inside adapater");
-          //  Log.i("answeredLists.length", answeredLists.size()+ "");
+        for (int i = 0; i < resource.length; i++) {
+            answeredLists.put(i + 1, resource[i]);
 
         }
-        Log.i("answeredLists.lengthOut", answeredLists.size()+ "");
+        //  Log.i("answeredLists.lengthOut", answeredLists.size()+ "");
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(R.layout.question, parent, false);
-//        convertView.setBottom(10);
-//        convertView.setHorizontalFadingEdgeEnabled(true);
         if (position % 2 == 0) {
             convertView.setBackgroundColor(Color.rgb(160, 198, 225));
         } else {
@@ -87,15 +81,8 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
         //Label textViews
         questionText = (TextView) convertView.findViewById(R.id.questionText);
         questionNumber = (TextView) convertView.findViewById(R.id.questionNumber);
-//        choiceA = (TextView) convertView.findViewById(R.id.choiceA);
-//        choiceB = (TextView) convertView.findViewById(R.id.choiceB);
-//        choiceC = (TextView) convertView.findViewById(R.id.choiceC);
-//        choiceD = (TextView) convertView.findViewById(R.id.choiceD);
-//        choiceE = (TextView) convertView.findViewById(R.id.choiceE);
-//        choiceF = (TextView) convertView.findViewById(R.id.choiceF);
 
         final TextView correctAnsText = (TextView) convertView.findViewById(R.id.correctAnswer);
-
 
         final Button choiceA_btn = (Button) convertView.findViewById(R.id.choiceA_textBtn);
         choiceA_btn.setTag(position);
@@ -104,13 +91,6 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
         final Button choiceD_btn = (Button) convertView.findViewById(R.id.choiceD_textBtn);
         final Button choiceE_btn = (Button) convertView.findViewById(R.id.choiceE_textBtn);
         final Button choiceF_btn = (Button) convertView.findViewById(R.id.choiceF_textBtn);
-
-//        choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//        choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//        choiceC_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//        choiceD_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//        choiceE_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//        choiceF_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
 
         TextView qnNumber = (TextView) convertView.findViewById(R.id.questionNumber);
         qnNumber.setText("# " + (position + 1));
@@ -123,75 +103,6 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
         Button choiceE = (Button) convertView.findViewById(R.id.choiceE_textBtn);
         Button choiceF = (Button) convertView.findViewById(R.id.choiceF_textBtn);
 
-        //
-       // String studAnswer = answeredLists.get(position +1).getStudentAnswer();
-//        if(studAnswer != null){
-//            Log.i("studAnser ["+ position+1+ "]: ", studAnswer);
-//            switch (studAnswer){
-//                case "A":
-//                    correctAnsText.setText("You selected: " + "A");
-//                    choiceA.setBackgroundColor(Color.argb(255, 51, 102, 255));
-//                    choiceB.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceC.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceD.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceE.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceF.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//
-//                case "B":
-//                    correctAnsText.setText("You selected: " + "B");
-//                    choiceB.setBackgroundColor(Color.argb(255, 51, 102, 255));
-//                    choiceC.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceD.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceE.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceF.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceA.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//
-//                case "C":
-//                    correctAnsText.setText("You selected: " + "C");
-//                    choiceC_btn.setBackgroundColor(Color.argb(255, 51, 102, 255));
-//                    choiceD.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceE.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceF.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceA.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceB.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//
-//
-//                case "D":
-//                    correctAnsText.setText("You selected: " + "D");
-//                    choiceD.setBackgroundColor(Color.argb(255, 51, 102, 255));
-//                    choiceE.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceF.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceA.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceB.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceC.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//
-//                case "E":
-//                    correctAnsText.setText("You selected: " + "E");
-//                    choiceE.setBackgroundColor(Color.argb(255, 51, 102, 255));
-//                    choiceF.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceA.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceB.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceC.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceD.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//
-//                case "F":
-//                    correctAnsText.setText("You selected: " + "F");
-//                    choiceF.setBackgroundColor(Color.argb(255, 51, 102, 255));
-//                    choiceA.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceB.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceC.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceD.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//                    choiceE.setBackgroundColor(Color.argb(255, 204, 204, 204));
-//
-//
-//                default:
-//                    correctAnsText.setText("Not attempted");
-//
-//            }
-//
-//        }
-
-
 
         choiceA_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,15 +114,9 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceE_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceF_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 correctAnsText.setText("You selected: A");
-               // correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
 
-               // if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("A");
-               // }
-              // AnsweredQuestionModel question = getItem(position);
-               // question.setStudentAnswer("AA");
-               // question.setQuestion("In Adapter..");
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
+                answeredLists.get(position + 1).setStudentAnswer("A");
+                // Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
 
 
             }
@@ -228,14 +133,9 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceE_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceD_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 correctAnsText.setText("You selected: B");
-               // correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
 
-               // if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("B");
-              //  }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
-
-
+                answeredLists.get(position + 1).setStudentAnswer("B");
+                //Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
 
 
             }
@@ -250,13 +150,9 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceE_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceF_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 correctAnsText.setText("You selected: C");
-                //correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
 
-               // if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("C");
-               // }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
-
+                answeredLists.get(position + 1).setStudentAnswer("C");
+                //  Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
 
 
             }
@@ -273,12 +169,10 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 correctAnsText.setText("You selected: D");
-                //correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
 
-               // if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("D");
-                //}
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
+                answeredLists.get(position + 1).setStudentAnswer("D");
+
+                // Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
 
 
             }
@@ -294,12 +188,10 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 correctAnsText.setText("You selected: E");
-               // correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
 
-               // if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("E");
-               // }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
+                answeredLists.get(position + 1).setStudentAnswer("E");
+
+                //Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
 
             }
         });
@@ -314,17 +206,12 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
                 correctAnsText.setText("You selected: F");
 
-              //  correctAnsText.setText("You selected: " + answeredLists.get(position+1).getStudentAnswer());
-              //  if(answeredLists.get(position+1).getStudentAnswer() == null) {
-                    answeredLists.get(position + 1).setStudentAnswer("F");
+                answeredLists.get(position + 1).setStudentAnswer("F");
 
-              //  }
-                Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
+                //   Log.i("answered for "+ position+1, answeredLists.get(position+1).getStudentAnswer());
 
             }
         });
-
-
 
 
         TextView choiceCLabel = (TextView) convertView.findViewById(R.id.choiceC);
@@ -336,10 +223,10 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
         questionView.setText(" " + answeredQuestions1[position].getQuestion());
 
         if (answeredQuestions1[position].getChoices() != null) {
-            String studAns = answeredLists.get(position+1).getStudentAnswer();
+            String studAns = answeredLists.get(position + 1).getStudentAnswer();
             if (answeredQuestions1[position].getChoices().get("A") != null) {
                 choiceA.setText(answeredQuestions1[position].getChoices().get("A").toString());
-                if(studAns != null && studAns.equals("A")){
+                if (studAns != null && studAns.equals("A")) {
                     choiceA.setBackgroundColor(Color.argb(255, 51, 102, 255));
                     correctAnsText.setText("You selected: " + "A");
 
@@ -347,7 +234,7 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
             }
             if (answeredQuestions1[position].getChoices().get("B") != null) {
                 choiceB.setText(answeredQuestions1[position].getChoices().get("B").toString());
-                if(studAns != null && studAns.equals("B")){
+                if (studAns != null && studAns.equals("B")) {
                     choiceB.setBackgroundColor(Color.argb(255, 51, 102, 255));
                     correctAnsText.setText("You selected: " + "B");
 
@@ -357,7 +244,7 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceC.setText(answeredQuestions1[position].getChoices().get("C").toString());
                 choiceC.setVisibility(choiceC.VISIBLE);
                 choiceCLabel.setVisibility(choiceCLabel.VISIBLE);
-                if(studAns != null && studAns.equals("C")){
+                if (studAns != null && studAns.equals("C")) {
                     choiceC.setBackgroundColor(Color.argb(255, 51, 102, 255));
                     correctAnsText.setText("You selected: " + "C");
 
@@ -367,7 +254,7 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceD.setText(answeredQuestions1[position].getChoices().get("D").toString());
                 choiceD.setVisibility(choiceD.VISIBLE);
                 choiceDLabel.setVisibility(choiceDLabel.VISIBLE);
-                if(studAns != null && studAns.equals("D")){
+                if (studAns != null && studAns.equals("D")) {
                     choiceD.setBackgroundColor(Color.argb(255, 51, 102, 255));
                     correctAnsText.setText("You selected: " + "D");
 
@@ -377,7 +264,7 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceE.setText(answeredQuestions1[position].getChoices().get("E").toString());
                 choiceE.setVisibility(choiceE.VISIBLE);
                 choiceELabel.setVisibility(choiceELabel.VISIBLE);
-                if(studAns != null && studAns.equals("E")){
+                if (studAns != null && studAns.equals("E")) {
                     choiceE.setBackgroundColor(Color.argb(255, 51, 102, 255));
                     correctAnsText.setText("You selected: " + "E");
 
@@ -387,7 +274,7 @@ public class QuestionsAdapterBeforeFinal extends ArrayAdapter<AnsweredQuestionMo
                 choiceF.setText(answeredQuestions1[position].getChoices().get("F").toString());
                 choiceF.setVisibility(choiceF.VISIBLE);
                 choiceFLabel.setVisibility(choiceFLabel.VISIBLE);
-                if(studAns != null && studAns.equals("F")){
+                if (studAns != null && studAns.equals("F")) {
                     choiceF.setBackgroundColor(Color.argb(255, 51, 102, 255));
                     correctAnsText.setText("You selected: " + "F");
 

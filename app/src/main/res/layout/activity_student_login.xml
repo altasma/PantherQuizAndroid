@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/register_button"
-        android:text="Register"
+        android:text="Login With Email"
         android:layout_below="@+id/login_btn"
         />
 

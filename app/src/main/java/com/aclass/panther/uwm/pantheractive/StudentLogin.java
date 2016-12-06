@@ -1,26 +1,5 @@
 package com.aclass.panther.uwm.pantheractive;
 
-//public class StudentLogin extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_student_login);
-//
-//
-//
-//        Button btnSignIn = (Button) findViewById(R.id.btnSignIn);
-//        if(btnSignIn != null) {
-//            btnSignIn.setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    Intent i = new Intent(StudentLogin.this, MainActivity.class);
-//                    startActivity(i);
-//                }
-//
-//            });
-//        }
-//    }
-//}
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -45,6 +24,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+
+/**
+ * Created by Asmamaw on 10/26/16.
+ */
+
 public class StudentLogin extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -66,9 +50,9 @@ public class StudentLogin extends AppCompatActivity implements
         setContentView(R.layout.activity_student_login);
 
         // Assign fields
-        mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        registerButton = (Button) findViewById(R.id.register_button);
-        loginButton = (Button) findViewById(R.id.login_btn);
+        mSignInButton = (SignInButton) findViewById(R.id.sign_in_button); //Google signin button
+        registerButton = (Button) findViewById(R.id.register_button);  //Register button
+        loginButton = (Button) findViewById(R.id.login_btn);  //Login button
 
         // Set click listeners
         mSignInButton.setOnClickListener(this);
@@ -86,7 +70,8 @@ public class StudentLogin extends AppCompatActivity implements
                 .build();
 
         // Initialize FirebaseAuth
-        mFirebaseAuth = FirebaseAuth.getInstance();    }
+        mFirebaseAuth = FirebaseAuth.getInstance();
+    }
 
     @Override
     public void onClick(View v) {
@@ -108,12 +93,12 @@ public class StudentLogin extends AppCompatActivity implements
     }
 
     private void signUp() {
-        Intent signUpIntent = new Intent(this,SignUpActivity.class);
+        Intent signUpIntent = new Intent(this, SignUpActivity.class);
         startActivity(signUpIntent);
     }
 
-    private void logIn(){
-        Intent signUpIntent = new Intent(this,ClassListActivity.class);
+    private void logIn() {
+        Intent signUpIntent = new Intent(this, ClassListActivity.class);
         startActivity(signUpIntent);
     }
 

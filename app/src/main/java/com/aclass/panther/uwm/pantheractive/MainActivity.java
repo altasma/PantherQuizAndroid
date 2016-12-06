@@ -1,16 +1,8 @@
 package com.aclass.panther.uwm.pantheractive;
-//
-//import android.support.v7.app.AppCompatActivity;
-//import android.os.Bundle;
-//
-//public class MainActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//    }
-//}
+
+/**
+ * Created by Asmamaw on 9/15/16.
+ */
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -44,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private SharedPreferences mSharedPreferences;
     private GoogleApiClient mGoogleApiClient;
 
-    TextView title ;
+    TextView title;
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -55,26 +47,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_icon_tab);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_main);
         title = (TextView) findViewById(R.id.titleText);
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(getApplicationContext(),TakeQuizActivity.class);
+                Intent in = new Intent(getApplicationContext(), TakeQuizActivity.class);
                 startActivity(in);
             }
         });
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        // Set default username is anonymous.
         mUsername = ANONYMOUS;
-       // Log.i(TAG,mUsername.toString());
 
         // Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, StudentLogin.class));
+            startActivity(new Intent(this, SignUpActivity.class));
             finish();
             return;
         } else {
@@ -88,20 +81,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
-
-     //   lv = (ListView) findViewById(R.id.listView1);
-     //   modelItems = new Model[1];
-//        modelItems[0] = new Model("", 0, "");
-//        modelItems[1] = new Model("", 1, "");
-//        modelItems[2] = new Model("", 1, "");
-//        modelItems[3] = new Model("", 0, "");
-//        modelItems[4] = new Model("", 1,"");
-     //   CustomAdapter adapter = new CustomAdapter(this, modelItems);
-     //   lv.setAdapter(adapter);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -118,8 +101,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 mUsername = ANONYMOUS;
-                startActivity(new Intent(this, StudentLogin.class));
+                startActivity(new Intent(this, SignUpActivity.class));
                 return true;
+            case R.id.help_menu:
+                Intent helpIntent = new Intent(getApplicationContext(), UserManualActvity.class);
+                startActivity(helpIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

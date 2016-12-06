@@ -8,7 +8,6 @@
     android:background="@color/colorAppBackground">
     <TextView
         android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/questionNumber"
@@ -191,7 +190,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/correctAnswer"
-        android:text="You selected "
+        android:text="Not attempted "
         android:textSize="@dimen/textSize_choices"
         android:layout_marginLeft="10dp"
         android:textStyle="bold"

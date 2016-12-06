@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
@@ -27,10 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class ClassListActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener{
+public class ClassListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -38,140 +38,114 @@ public class ClassListActivity extends AppCompatActivity  implements AdapterView
     private String TAG = "PantherQuiz ClassList Activity log";
 
     private GoogleApiClient mGoogleApiClient;
+
     public static final String ANONYMOUS = "anonymous";
+
     private String mUsername;
+    private String userEmail;
+    private String formattedEmail;
     private SharedPreferences mSharedPreferences;
 
-    QuestionModel question ;
+    final List data = new ArrayList<String>();
+    final List data1 = new ArrayList<ClassRoomModel>();
+    final List<ClassRoomModel> classList = new ArrayList<ClassRoomModel>();
 
 
-
-
+    ClassRoomModel classRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.mipmap.ic_icon_tab);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_class_list);
-        question = new QuestionModel();
-//        question.setQuestion("Example question");
-//        question.setAnswer("A");
-//        HashMap hm = new HashMap<String,String>();
-//        hm.put("A","A is aa");
-//        hm.put("B", "B is bb");
-//        question.setChoices(hm);
-//
-//        QuestionModel ques = new QuestionModel();
-//        ques.setAnswer("C");
-//        ques.setQuestion("Another Question");
-//        HashMap hm2 = new HashMap<String, String>();
-//        hm2.put("A","Choice A of 2nd");
-//        hm2.put("B", "Choice B of 2nd");
-//        ques.setChoices(hm2);
 
-        final List data1 = new ArrayList<QuestionModel>();
-       // data1.add(ques);
+
+        classRoom = new ClassRoomModel();
+        classRoom.setName("--Select a Class--"); //place holder for index 0,
+
+
+        data1.add(classRoom);  //dummy classRoom for displaying select message
+        classList.add(classRoom);
+
 
         Spinner spinner = (Spinner) findViewById(R.id.classList_spinner);
         spinner.setOnItemSelectedListener(this);
-        final List data = new ArrayList<String>();
-        data.add("--Select a Class");
-        data1.add(question);
-        Log.i("Data1: ", data1.get(0).toString());
-//        data.add(new String("CSS1"));
-//        data.add(new String("CSS2"));
-//        data.add(new String("CSS3"));
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,data1);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, data1);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        userEmail = mFirebaseUser.getEmail();
+
+        String[] splitedEmail;
+        String[] splitedEmail2;
+        if (userEmail != null) {
+            splitedEmail = userEmail.split("@");
+//            Log.i("SplitedEmail", splitedEmail[0].toString() + ", "+ splitedEmail[1].toString());
+            splitedEmail2 = splitedEmail[1].split("\\.");
+//            Log.i("Legth", splitedEmail2.length + "");
+            if (splitedEmail2.length > 0) {
+//                Log.i("splitedEmail2", splitedEmail2[0].toString() + ", " + splitedEmail2[0].toString());
+            }
+            formattedEmail = splitedEmail[0] + "-" + splitedEmail2[0] + "dot" + splitedEmail2[1]; //used as a child of studentList
+//            Log.i("formattedEmail", formattedEmail);
+        }
 
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
-//        database2.child("classes/quizzes/").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Log.i("dataSnapshot1", dataSnapshot.toString());
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        database2.child("classes/quizzes/").addValueEventListener(new ValueEventListener() {
+
+        database2.child("studentsList/").child(formattedEmail).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                data1.clear();
 
-                for(DataSnapshot classDataSnapShot : dataSnapshot.getChildren()){
-                   // data1.clear();
+                for (DataSnapshot classDataSnapShot : dataSnapshot.getChildren()) {
+                    data1.clear();
+                    classList.clear();
+                    data1.add(classRoom); //Reading the dummy classRoom
+                    classList.add(classRoom);
+                    ClassRoomModel q1 = new ClassRoomModel();
 
-                    QuestionModel q1 = new QuestionModel();
+                    for (DataSnapshot snap : classDataSnapShot.getChildren()) {
+                        try {
+                            q1 = new ClassRoomModel();
+
+                            q1.setName(snap.child("name").getValue().toString());
+                            q1.setId(snap.child("classId").getValue().toString());
+                            q1.setDepartment(snap.child("department").getValue().toString());
+                            q1.setSchool(snap.child("school").getValue().toString());
+
+                        } catch (Exception e) {
+                            Log.i("Exception:", e.toString());
+                        }
+                        data1.add(q1);
+                        classList.add(q1);
+
+                    }
+
                     try {
+                        /*
+                        Log.i("DataSnapShotString: ", dataSnapshot.toString());
+                        Log.i("DataSnapShotValue: ", dataSnapshot.getValue().toString());
+                        Log.i("DataSnapShotChildre: ", dataSnapshot.getChildren().iterator().next().toString());
+
+
                         Log.i("dsChildred", classDataSnapShot.getChildren().iterator().next().getValue().toString());
                         Log.i("DSP get value: ", classDataSnapShot.getValue().toString());
+                        */
                         DatabaseReference ref = classDataSnapShot.getRef();
-                        Log.i("Question db:", ref.child("question").getDatabase().toString());
-                        Log.i("Ref is:", ref.toString());
-                        Log.i("Ref answer:", ref.child("answer").getKey());
-                        Log.i("Answer: ", classDataSnapShot.child("answer").getValue().toString());
-                        Log.i("Question: ", classDataSnapShot.child("question").getValue().toString());
-                        Log.i("Choices: ", classDataSnapShot.child("choices").getValue().toString());
+                        Log.i("Question db:", ref.child("classes").getDatabase().toString());
 
-                        q1.setAnswer(classDataSnapShot.child("answer").getValue().toString());
-                         q1.setQuestion(classDataSnapShot.child("question").getValue().toString());
-                        HashMap chm = new HashMap<String,String>();
-                        chm.put("Achoice", classDataSnapShot.child("choices").getValue());
-
-                        //  q1 = (QuestionModel) classDataSnapShot.getValue();
-                        Log.i("q1 :", q1.toString());
-                    }
-                    catch(Exception e){
-                        Log.i("Eccveption", e.getMessage());
+                    } catch (Exception e) {
+                        Log.i("Exception", e.getMessage());
                     }
 
-
-                    Log.i("SnapShotto string",classDataSnapShot.toString());
-
-//                    if(classDataSnapShot.getKey().equals("choices")){
-//                        Log.i("child tostring key", classDataSnapShot.getKey());
-////                        QuestionModel q1 = new QuestionModel();
-//                        HashMap nhm = new HashMap();
-//                        nhm.put("A",classDataSnapShot.getValue().toString());
-//                        q1.setChoices(nhm);
-//                        Log.i("Q1 is ", q1.getChoices().toString());
-//                        Log.i("Q1", q1.toString());
-//
-//                    }
-//                    else if(classDataSnapShot.getKey().equals("question")){
-//                        q1.setQuestion(classDataSnapShot.getValue().toString());
-//                    }
-//                    else if(classDataSnapShot.getKey().equals("answer")){
-//                        q1.setAnswer(classDataSnapShot.getValue().toString());
-//                    }
-//                    else {
-//
-//                    }
-                   // QuestionModel q  = classDataSnapShot.getValue(QuestionModel.class);
-                    data1.add(q1);
-                    Log.i("After add1 q1 is", q1.toString());
-                    Log.i("After add1 data1 is ", data1.get(0).toString());
                 }
                 adapter.notifyDataSetChanged();
 
@@ -183,51 +157,15 @@ public class ClassListActivity extends AppCompatActivity  implements AdapterView
 
             }
         });
-        Log.i("Data1 lower: ", data1.get(0).toString());
-
-        Log.i(TAG,database2.toString());
-
-//        database.child("classes").child("class2").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                data.clear();
-//                for(DataSnapshot classDataSnapShot : dataSnapshot.getChildren()){
-//                    String a = classDataSnapShot.getValue(String.class);
-//                    data.add(a);
-//                }
-//                //adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,data);
-//                adapter.notifyDataSetChanged();
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
 
 
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.class_lists, android.R.layout.simple_spinner_item);
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,data);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        spinner.setAdapter(adapter);
-//        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-
-        // Initialize Firebase Auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, StudentLogin.class));
-            finish();
+            startActivity(new Intent(this, SignUpActivity.class));
             return;
         } else {
             mUsername = mFirebaseUser.getDisplayName();
             if (mFirebaseUser.getPhotoUrl() != null) {
-               // mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
         }
 
@@ -238,15 +176,29 @@ public class ClassListActivity extends AppCompatActivity  implements AdapterView
 
 
     }
-    private  int mLastSpinnerPosotion = 0;
+
+    private int mLastSpinnerPosotion = 0;
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if(mLastSpinnerPosotion == i){
+        if (mLastSpinnerPosotion == i) {
             return;
         }
         mLastSpinnerPosotion = i;
+//        Log.i("Data1 at" + i  , data1.get(i).toString());
+
         Intent listViewIntent = new Intent(this, QuizListActivity.class);
+        listViewIntent.putExtra("EXTRA_CLASS_NAME", classList.get(i).getName());
+//        Log.i("EXTRA_CLASS_NAME", classList.get(i).getName());
+//        Log.i("EXTRA_CLASS_ID", "" + classList.get(i).getId());
+
+        ClassRoomModel cm = classList.get(i);
+//        Log.i("classList.size "+ i, classList.size() + "");
+//        Log.i("cm:", cm.toString());
+        String classId = cm.getId();
+        listViewIntent.putExtra("EXTRA_CLASS_ID", classList.get(i).getId().toString());
+//        Log.i("EXTRA_CLASS_ID", classId);
+        mLastSpinnerPosotion = 0;
         startActivity(listViewIntent);
     }
 
@@ -257,7 +209,6 @@ public class ClassListActivity extends AppCompatActivity  implements AdapterView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -269,16 +220,24 @@ public class ClassListActivity extends AppCompatActivity  implements AdapterView
                 mFirebaseAuth.signOut();
                 Auth.GoogleSignInApi.signOut(mGoogleApiClient);
                 mUsername = ANONYMOUS;
-                Intent intent = new Intent(this, StudentLogin.class);
-                if(Build.VERSION.SDK_INT >= 11){
+                Intent intent = new Intent(this, SignUpActivity.class);
+                if (Build.VERSION.SDK_INT >= 11) {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                }
-                else{
+                } else {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 }
-              //  startActivity(new Intent(this, StudentLogin.class));
                 startActivity(intent);
                 return true;
+            case R.id.user_settings:
+                Intent settingsIntent = new Intent(getApplicationContext(), UserSettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            case R.id.help_menu:
+                Intent helpIntent = new Intent(getApplicationContext(), UserManualActvity.class);
+                startActivity(helpIntent);
+                return true;
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -286,6 +245,8 @@ public class ClassListActivity extends AppCompatActivity  implements AdapterView
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast toast = Toast.makeText(getApplicationContext(), "Connection Failed, unable to Authenticate", Toast.LENGTH_SHORT);
+        toast.show();
 
     }
 }

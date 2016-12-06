@@ -1,12 +1,17 @@
 package com.aclass.panther.uwm.pantheractive;
 
+
+/**
+ * Created by Asmamaw on 10/26/16.
+ */
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -28,7 +34,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class QuizListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -38,9 +43,20 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
     private String TAG = "PantherQuiz QuizList Activity log";
 
     private GoogleApiClient mGoogleApiClient;
+
     public static final String ANONYMOUS = "anonymous";
     private String mUsername;
     private SharedPreferences mSharedPreferences;
+
+    final List data1 = new ArrayList<QuizModel>();
+    final List<QuizModel> quizList = new ArrayList<QuizModel>();
+
+    private String extra_class_name;
+    private String extra_class_id;
+    private String extra_quiz_name;
+
+    private TextView classTitleText;
+    private QuizModel quiz;
 
 
     @Override
@@ -51,136 +67,101 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         setContentView(R.layout.activity_quiz_list);
 
-        final List data1 = new ArrayList<QuestionModel>();
+        classTitleText = (TextView) findViewById(R.id.classTitle);
+
+        Bundle class_extras = getIntent().getExtras();
+        if (class_extras != null) {
+            //Log.i("extras, ", class_extras.toString());
+            extra_class_name = class_extras.getString("EXTRA_CLASS_NAME");
+            classTitleText.setText(extra_class_name);
+            // Log.i("extr_class_name,", extra_class_name);
+            extra_class_id = class_extras.getString("EXTRA_CLASS_ID");
+            // Log.i("extr_class_id,", extra_class_id);
+
+        }
+
+
+        quiz = new QuizModel();
+        quiz.setQuizName("--Select a Quiz--"); //place holder for index 0,
+
+
+        data1.add(quiz);  //dummy classRoom for displaying select message
+        quizList.add(quiz);
 
 
         Spinner spinner = (Spinner) findViewById(R.id.quizList_spinner);
         spinner.setOnItemSelectedListener(this);
 
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.quiz_lists, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
 
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, data1);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         DatabaseReference database2 = FirebaseDatabase.getInstance().getReference();
-//        database2.child("classes/quizzes/").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Log.i("dataSnapshot1", dataSnapshot.toString());
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-        database2.child("classes/quizzes/").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                data1.clear();
 
-                for (DataSnapshot classDataSnapShot : dataSnapshot.getChildren()) {
-                    // data1.clear();
+        if (extra_class_id != null) {
+            database2.child("quizzes").child(extra_class_id).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    data1.clear();
+                    data1.add(quiz); //Re-adding the dummy quiz
 
-                    QuestionModel q1 = new QuestionModel();
-                    try {
-                        Log.i("dsChildred", classDataSnapShot.getChildren().iterator().next().getValue().toString());
-                        Log.i("DSP get value: ", classDataSnapShot.getValue().toString());
-                        DatabaseReference ref = classDataSnapShot.getRef();
-                        Log.i("Question db:", ref.child("question").getDatabase().toString());
-                        Log.i("Ref is:", ref.toString());
-                        Log.i("Ref answer:", ref.child("answer").getKey());
-                        Log.i("Answer: ", classDataSnapShot.child("answer").getValue().toString());
-                        Log.i("Question: ", classDataSnapShot.child("question").getValue().toString());
-                        Log.i("Choices: ", classDataSnapShot.child("choices").getValue().toString());
+                    quizList.clear();
+                    quizList.add(quiz);
 
-                        q1.setAnswer(classDataSnapShot.child("answer").getValue().toString());
-                        q1.setQuestion(classDataSnapShot.child("question").getValue().toString());
-                        HashMap chm = new HashMap<String, String>();
-                        chm.put("Achoice", classDataSnapShot.child("choices").getValue());
+                    for (DataSnapshot classDataSnapShot : dataSnapshot.getChildren()) {
 
-                        //  q1 = (QuestionModel) classDataSnapShot.getValue();
-                        Log.i("q1 :", q1.toString());
-                    } catch (Exception e) {
-                        Log.i("Eccveption", e.getMessage());
-                    }
+                        QuizModel q1 = new QuizModel();
+                        try {
+                            if(classDataSnapShot.child("isAvailable").getValue().toString().equals("true")) {
+                                q1.setQuizName(classDataSnapShot.child("quizName").getValue().toString());
+                                //Log.i("quizName:", classDataSnapShot.child("quizName").getValue().toString());
+                                q1.setQuizId(classDataSnapShot.getKey());
+
+                                data1.add(q1);
+                                quizList.add(q1);
+                            }
+                            else{
+                                    //Quiz is locked, do not add it to the spinner
+                                continue;
+                            }
 
 
-                    Log.i("SnapShotto string", classDataSnapShot.toString());
+                        } catch (Exception e) {
+                            Log.i("Exception", e.getMessage());
+                        }
 
-                    if (classDataSnapShot.getKey().equals("choices")) {
-                        Log.i("child tostring key", classDataSnapShot.getKey());
-//                        QuestionModel q1 = new QuestionModel();
-                        HashMap nhm = new HashMap();
-                        nhm.put("A", classDataSnapShot.getValue().toString());
-                        q1.setChoices(nhm);
-                        Log.i("Q1 is ", q1.getChoices().toString());
-                        Log.i("Q1", q1.toString());
-
-                    } else if (classDataSnapShot.getKey().equals("question")) {
-                        q1.setQuestion(classDataSnapShot.getValue().toString());
-                    } else if (classDataSnapShot.getKey().equals("answer")) {
-                        q1.setAnswer(classDataSnapShot.getValue().toString());
-                    } else {
+                        // Log.i("SnapShotto string", classDataSnapShot.toString());
 
                     }
-                    // QuestionModel q  = classDataSnapShot.getValue(QuestionModel.class);
-                    data1.add(q1);
-                    Log.i("After add1 q1 is", q1.toString());
-                    Log.i("After add1 data1 is ", data1.get(0).toString());
+                    adapter.notifyDataSetChanged();
+
                 }
-                adapter.notifyDataSetChanged();
-
-            }
 
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-        //  Log.i("Data1 lower: ", data1.get(0).toString());
+                }
+            });
 
-        Log.i(TAG, database2.toString());
-
-
-        // Initialize Firebase Auth
+        }
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         if (mFirebaseUser == null) {
-            // Not signed in, launch the Sign In activity
             startActivity(new Intent(this, SignUpActivity.class));
-            finish();
             return;
         } else {
             mUsername = mFirebaseUser.getDisplayName();
             if (mFirebaseUser.getPhotoUrl() != null) {
-                // mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
         }
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
-
 
     }
 
@@ -188,15 +169,30 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        /*
+        Log.i("BeforeINtentStart1: ", i + "");
+        Log.i("View:", view.toString());
+        Log.i("item i:", i + "");
+        Log.i("long l: ", l + "");
+        Log.i("adaptwrView", adapterView.getItemIdAtPosition(i) + "");
+        */
+
         if (mLastSpinnerPosotion == i) {
             return;
         }
         mLastSpinnerPosotion = i;
-//        Intent listViewIntent = new Intent(this, TakeQuizActivity.class);
-//        startActivity(listViewIntent);
+        // Log.i("BeforeINtentStart2: ", i + "");
+        Intent listViewIntent = new Intent(this, QuizDetailActivity.class);
+        listViewIntent.putExtra("EXTRA_CLASS_ID", extra_class_id);
+        listViewIntent.putExtra("EXTRA_QUIZ_ID", quizList.get(i).getQuizId());
+        listViewIntent.putExtra("EXTRA_QUIZ_NAME", quizList.get(i).getQuizName());
+        listViewIntent.putExtra("EXTRA_CLASS_NAME", extra_class_name);
         mLastSpinnerPosotion = 0;
-        Intent quizDetailIntent = new Intent(this, QuizDetailActivity.class);
-        startActivity(quizDetailIntent);
+        // Log.i("BeforeINtentStart3: ", i + "");
+        // Log.i("Data1 at" + i  , data1.get(i).toString());
+        startActivity(listViewIntent);
+        // Log.i("BeforeINtentStart4: ", i + "");
+
     }
 
     @Override
@@ -206,8 +202,7 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main_quiz, menu);
         return true;
     }
 
@@ -224,7 +219,6 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
                 } else {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 }
-                //  startActivity(new Intent(this, SignUpActivity.class));
                 startActivity(intent);
                 return true;
             case R.id.home_menu:
@@ -232,10 +226,17 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
                 startActivity(homeIntent);
                 return true;
 
-            case R.id.user_settings:
-                Intent settingsIntent = new Intent(getApplicationContext(), UserSettingsActivity.class);
-                startActivity(settingsIntent);
+            case R.id.score_menu:
+                Intent quizReportIntent = new Intent(getApplicationContext(), QuizReportByClassActivity.class);
+                quizReportIntent.putExtra("EXTRA_CLASS_ID", extra_class_id);
+                quizReportIntent.putExtra("EXTRA_CLASS_NAME", extra_class_name);
+                startActivity(quizReportIntent);
                 return true;
+            case R.id.help_menu:
+                Intent helpIntent = new Intent(getApplicationContext(), UserManualActvity.class);
+                startActivity(helpIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -245,6 +246,5 @@ public class QuizListActivity extends AppCompatActivity implements AdapterView.O
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast toast = Toast.makeText(getApplicationContext(), "Connection Failed, unable to Authenticate", Toast.LENGTH_SHORT);
         toast.show();
-
     }
 }

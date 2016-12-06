@@ -6,12 +6,8 @@
         android:title="@string/home_menu"/>
 
     <item
-        android:id="@+id/help_menu"
-        android:title="@string/help_page"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/user_settings"
-        android:title="@string/fresh_config"
+        android:id="@+id/score_menu"
+        android:title="@string/grade_report"
         app:showAsAction="never"/>
 
 

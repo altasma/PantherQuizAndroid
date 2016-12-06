@@ -5,84 +5,101 @@ package com.aclass.panther.uwm.pantheractive;
  */
 
 public class QuizModel {
-    private String id;
-    private String department;
-    private String name;
-    private  String school;
-    private String term;
-    private String year;
+    private String quizId;
+    private String quizName;
+    private String startTime;
+    private String endTime;
+    private String challenge;
+    private String isExpired;
+    private String isTaken;
+    private String isAvailable;
 
-    public QuizModel(){
+
+    public QuizModel() {
 
     }
 
-
-    public QuizModel(String id, String department, String name, String school, String term, String year) {
-        this.id = id;
-        this.department = department;
-        this.name = name;
-        this.school = school;
-        this.term = term;
-        this.year = year;
+    public QuizModel(String quizId, String quizName, String startTime,
+                     String endTime, String challenge, String isExpired,
+                     String isTaken, String isAvailable) {
+        this.quizId = quizId;
+        this.quizName = quizName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.challenge = challenge;
+        this.isExpired = isExpired;
+        this.isTaken = isTaken;
+        this.isAvailable = isAvailable;
     }
 
-    public String getId() {
-        return id;
+    public String getQuizId() {
+        return quizId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setQuizId(String quizId) {
+        this.quizId = quizId;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getQuizName() {
+        return quizName;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setQuizName(String quizName) {
+        this.quizName = quizName;
     }
 
-    public String getName() {
-        return name;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public String getSchool() {
-        return school;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setSchool(String school) {
-        this.school = school;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
-    public String getTerm() {
-        return term;
+    public String getChallenge() {
+        return challenge;
     }
 
-    public void setTerm(String term) {
-        this.term = term;
+    public void setChallenge(String challenge) {
+        this.challenge = challenge;
     }
 
-    public String getYear() {
-        return year;
+    public String getIsExpired() {
+        return isExpired;
     }
 
-    public void setYear(String year) {
-        this.year = year;
+    public void setIsExpired(String isExpired) {
+        this.isExpired = isExpired;
+    }
+
+    public String getIsTaken() {
+        return isTaken;
+    }
+
+    public void setIsTaken(String isTaken) {
+        this.isTaken = isTaken;
+    }
+
+    public String getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(String isAvailable) {
+        this.isAvailable = isAvailable;
     }
 
     @Override
     public String toString() {
         return
-                "id='" + id + '\'' +
-                ", department='" + department + '\'' +
-                ", name='" + name + '\'' +
-                ", school='" + school + '\'' +
-                ", term='" + term + '\'' +
-                ", year='" + year ;
+                quizName;
 
     }
 }

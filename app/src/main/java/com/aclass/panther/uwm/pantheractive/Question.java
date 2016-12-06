@@ -65,11 +65,12 @@ public class Question {
         this.choices = choices;
         this.corectAnswer = corectAnswer;
     }
-    public Question(){
+
+    public Question() {
 
     }
 
     private String studentAnswer;
-    private  String corectAnswer;
+    private String corectAnswer;
 
 }

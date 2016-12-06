@@ -1,5 +1,9 @@
 package com.aclass.panther.uwm.pantheractive;
 
+/**
+ * Created by Asmamaw on 10/26/16.
+ */
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +23,6 @@ public class QuizActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private FirebaseAuth mAuth;
     private DatabaseReference mRef;
     private DatabaseReference mQuestion;
-
 
 
     private RecyclerView mQuestions;

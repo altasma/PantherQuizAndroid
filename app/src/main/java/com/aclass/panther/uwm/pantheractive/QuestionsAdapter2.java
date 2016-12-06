@@ -22,10 +22,8 @@ public class QuestionsAdapter2 implements ListAdapter {
     Context context;
 
     TextView questionNumber;
-
     TextView questionText;
-    TextView choiceA,choiceB,choiceC,correctAnsText;
-    //  Button choiceA_btn,choiceB_btn, choiceC_btn;
+    TextView choiceA, choiceB, choiceC, correctAnsText;
 
 
     public QuestionsAdapter2(Context context, ArrayList<QuestionModel> resource) {
@@ -68,10 +66,9 @@ public class QuestionsAdapter2 implements ListAdapter {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         convertView = inflater.inflate(R.layout.question, parent, false);
 
-        if(position % 2 == 0) {
+        if (position % 2 == 0) {
             convertView.setBackgroundColor(Color.rgb(160, 198, 225));
-        }
-        else{
+        } else {
             convertView.setBackgroundColor(Color.rgb(100, 162, 206));
 
         }
@@ -83,27 +80,22 @@ public class QuestionsAdapter2 implements ListAdapter {
         choiceC = (TextView) convertView.findViewById(R.id.choiceC);
 
 
-
-
         final Button choiceA_btn = (Button) convertView.findViewById(R.id.choiceA_textBtn);
-        final Button  choiceB_btn = (Button) convertView.findViewById(R.id.choiceB_textBtn);
-        final Button  choiceC_btn = (Button) convertView.findViewById(R.id.choiceC_textBtn);
+        final Button choiceB_btn = (Button) convertView.findViewById(R.id.choiceB_textBtn);
+        final Button choiceC_btn = (Button) convertView.findViewById(R.id.choiceC_textBtn);
 
 
-
-        choiceA_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-        choiceB_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-        choiceC_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-
-
+        choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
+        choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
+        choiceC_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
 
 
         choiceA_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                choiceA_btn.setBackgroundColor(Color.argb(255,51, 102, 255));
-                choiceB_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-                choiceC_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
+                choiceA_btn.setBackgroundColor(Color.argb(255, 51, 102, 255));
+                choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
+                choiceC_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
 //                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
 
 
@@ -114,9 +106,9 @@ public class QuestionsAdapter2 implements ListAdapter {
             @Override
             public void onClick(View v) {
                 choiceB_btn.setText("This text has been changed");
-                choiceB_btn.setBackgroundColor(Color.argb(255,51, 102, 255));
-                choiceA_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-                choiceC_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
+                choiceB_btn.setBackgroundColor(Color.argb(255, 51, 102, 255));
+                choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
+                choiceC_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
 //                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
 
 
@@ -125,9 +117,9 @@ public class QuestionsAdapter2 implements ListAdapter {
         choiceC_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                choiceC_btn.setBackgroundColor(Color.argb(255,51, 102, 255));
-                choiceB_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
-                choiceA_btn.setBackgroundColor(Color.argb(255,204, 204, 204));
+                choiceC_btn.setBackgroundColor(Color.argb(255, 51, 102, 255));
+                choiceB_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
+                choiceA_btn.setBackgroundColor(Color.argb(255, 204, 204, 204));
 //                choiceD.setBackgroundColor(Color.argb(255,245,245,245));
 
 
@@ -135,7 +127,7 @@ public class QuestionsAdapter2 implements ListAdapter {
         });
 
         TextView qnNumber = (TextView) convertView.findViewById(R.id.questionNumber);
-        qnNumber.setText("# " + (position +1) );
+        qnNumber.setText("# " + (position + 1));
 
         TextView questionView = (TextView) convertView.findViewById(R.id.questionText);
         Button choiceA = (Button) convertView.findViewById(R.id.choiceA_textBtn);
@@ -143,42 +135,11 @@ public class QuestionsAdapter2 implements ListAdapter {
         Button choiceC = (Button) convertView.findViewById(R.id.choiceC_textBtn);
         TextView choiceCLabel = (TextView) convertView.findViewById(R.id.choiceC);
 
-
-//        if(this.questions[position].getQuestionText() != null){
-//            questionView.setText(this.questions[position].getQuestionText());
-//
-//            choiceA.setText(this.questions[position].getChoices()[0].toString());
-//            choiceB.setText(this.questions[position].getChoices()[1].toString());
-//            choiceC.setVisibility(choiceC.VISIBLE);
-//            choiceCLabel.setVisibility(choiceCLabel.VISIBLE);
-//
-//            Log.i("Inside Question Adapter", "Question text was not null");
-//        }
-//        else {
-//            questionView.setText(" And This is set from adapaters class");
-//
-//        }
-        for(QuestionModel a : questions){
-            if(a.getQuestion() != null){
+        for (QuestionModel a : questions) {
+            if (a.getQuestion() != null) {
                 questionView.setText(a.getQuestion());
             }
         }
-
-//        if(this.questions[position].getQuestionText() != null){
-//            questionView.setText(this.questions[position].getQuestionText());
-//
-//            choiceA.setText(this.questions[position].getChoices()[0].toString());
-//            choiceB.setText(this.questions[position].getChoices()[1].toString());
-//            choiceC.setVisibility(choiceC.VISIBLE);
-//            choiceCLabel.setVisibility(choiceCLabel.VISIBLE);
-//
-//            Log.i("Inside Question Adapter", "Question text was not null");
-//        }
-//        else {
-//            questionView.setText(" And This is set from adapaters class");
-//
-//        }
-
 
         return convertView;
     }

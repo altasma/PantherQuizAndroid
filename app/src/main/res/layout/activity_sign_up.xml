@@ -40,11 +40,23 @@
             android:visibility="gone"
             style="@style/ThemeOverlay.MyTextDetail"
             tools:text="Firebase User ID: 123456789abc" />
+
+        <com.google.android.gms.common.SignInButton
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_below="@+id/login_btn"
+            android:layout_toRightOf="@+id/register_button"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"/>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Class List"
-            android:visibility="visible"
+            android:text="Home"
             android:id="@+id/listViewBtn"
             android:background="@color/colorFresh"
             />

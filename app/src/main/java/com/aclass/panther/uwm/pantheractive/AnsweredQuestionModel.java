@@ -11,15 +11,16 @@ import java.util.HashMap;
 public class AnsweredQuestionModel {
     private String question;
     private String answer;
-    //    private String[] choices;
-    // private ArrayList<String> choices;
+    private String studentAnswer; // student's selection
+
     private HashMap<String, String> choices;
 
-    public AnsweredQuestionModel(String question, String answer, HashMap<String, String> choices) {
-        Log.i("INFO", "Inside QuestionMOdel class");
+    public AnsweredQuestionModel(String question, String answer, String studentAnswer, HashMap<String, String> choices) {
+        Log.i("INFO", "Inside AnsweredQuestionModel class");
         this.question = question;
         this.answer = answer;
         this.choices = choices;
+        this.studentAnswer = studentAnswer;
     }
 
     public AnsweredQuestionModel() {
@@ -34,10 +35,6 @@ public class AnsweredQuestionModel {
         this.answer = answer;
     }
 
-//    public void setChoices(String[] choices) {
-//        this.choices = choices;
-//    }
-
 
     public String getQuestion() {
         return question;
@@ -47,19 +44,14 @@ public class AnsweredQuestionModel {
         return answer;
     }
 
-//    public String[] getChoices() {
-//        return choices;
-//    }
 
-//    public ArrayList<String> getChoices() {
-//        return choices;
-//    }
-//
-//    public void setChoices(ArrayList<String> choices) {
-//        Log.i("INFO", "Inside QuestionMOdel class setChoices method");
-//
-//        this.choices = choices;
-//    }
+    public String getStudentAnswer() {
+        return studentAnswer;
+    }
+
+    public void setStudentAnswer(String studentAnswer) {
+        this.studentAnswer = studentAnswer;
+    }
 
     public HashMap<String, String> getChoices() {
         return choices;
@@ -74,8 +66,9 @@ public class AnsweredQuestionModel {
     public String toString() {
         return
                 "question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
-                ", choices=" + choices ;
+                        ", answer='" + answer + '\'' +
+                        ", choices=" + choices + '\'' +
+                        ", studAns=" + studentAnswer;
 
     }
 }
