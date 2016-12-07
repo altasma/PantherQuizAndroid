@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "194645364198",
-    "firebase_url": "https://pantheractive-60c27.firebaseio.com",
-    "project_id": "pantheractive-60c27",
-    "storage_bucket": "pantheractive-60c27.appspot.com"
+    "project_number": "151837932213",
+    "firebase_url": "https://pantherquiz-4bb1f.firebaseio.com",
+    "project_id": "pantherquiz-4bb1f",
+    "storage_bucket": "pantherquiz-4bb1f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:194645364198:android:15a831b82879b112",
+        "mobilesdk_app_id": "1:151837932213:android:15a831b82879b112",
         "android_client_info": {
           "package_name": "com.aclass.panther.uwm.pantheractive"
         }
       },
       "oauth_client": [
         {
-          "client_id": "194645364198-krraql4vtds8eu0lr7c9igc9s49bm04s.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.aclass.panther.uwm.pantheractive",
-            "certificate_hash": "A627E2D158775249BCC36F2E9D9081A8923CFEDC"
-          }
-        },
-        {
-          "client_id": "194645364198-6okr74vhhub74o85afj9ll3jirdqgdm0.apps.googleusercontent.com",
+          "client_id": "151837932213-8cm3p6iqgs2a8sae3c6lqq472qjcnnq2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBOawKRmUd4fLMfuekoW2BsBwAl8Y0OO5g"
+          "current_key": "AIzaSyBIWJQwg2kDWlLTnKQRpYQXO9Zxm2sQIPw"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "194645364198-6okr74vhhub74o85afj9ll3jirdqgdm0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
