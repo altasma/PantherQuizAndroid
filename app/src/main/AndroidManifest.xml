@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.aclass.panther.uwm.pantheractive">
+    package="com.aclass.panther.uwm.pantherquiz">
     <uses-permission android:name="android.permission.INTERNET" />
 
 
@@ -10,85 +10,60 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.aclass.panther.uwm.pantherquiz.MainActivity">
 
-            <!-- <intent-filter> -->
-            <!-- <action -->
-            <!-- android:name="android.intent.action.MAIN" -->
-            <!-- android:label="@string/app_name" -->
-            <!-- android:theme="@style/AppTheme" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
-        <activity android:name=".StudentLogin">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+        <activity android:name="com.aclass.panther.uwm.pantherquiz.StudentLogin">
         </activity>
-        <activity
-            android:name=".StudentHome"
-            android:label="Home " />
-        <activity android:name=".NewClassRoom" />
-        <activity android:name=".MultipleChoiceFactory" />
-        <activity android:name=".TrueFalseFactory" />
-        <activity android:name=".ReportsStudentViewActivity" />
-        <activity android:name=".SignUpActivity">
+        <activity android:name="com.aclass.panther.uwm.pantherquiz.SignUpActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BaseActivity" />
+        <activity android:name="com.aclass.panther.uwm.pantherquiz.BaseActivity" />
         <activity
-            android:name=".TakeQuizActivity"
+            android:name="com.aclass.panther.uwm.pantherquiz.TakeQuizActivity"
             android:label="@string/title_take_quiz_activity"
-            android:parentActivityName=".QuizDetailActivity" >
+            android:parentActivityName="com.aclass.panther.uwm.pantherquiz.QuizDetailActivity" >
             <meta-data
 
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".QuizDetailActivity"
+                android:value="com.aclass.panther.uwm.pantherquiz.QuizDetailActivity"
                 />
 
 
 
         </activity>
-        <activity android:name=".QuizActivity" />
         <activity
-            android:name=".ClassListActivity"
+            android:name="com.aclass.panther.uwm.pantherquiz.ClassListActivity"
             android:label="@string/title_class_list_activity" />
         <activity
-            android:name=".QuizListActivity"
+            android:name="com.aclass.panther.uwm.pantherquiz.QuizListActivity"
             android:label="@string/title_quiz_list_activity"
-            android:parentActivityName=".ClassListActivity"
+            android:parentActivityName="com.aclass.panther.uwm.pantherquiz.ClassListActivity"
             />
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value=".QuizDetailActivity"
+            android:value="com.aclass.panther.uwm.pantherquiz.QuizDetailActivity"
             />
 
         <activity
-            android:name=".QuizDetailActivity"
+            android:name="com.aclass.panther.uwm.pantherquiz.QuizDetailActivity"
             android:label="@string/title_quiz_detail_activity" />
         <activity
-            android:name=".QuizReportByClassActivity"
+            android:name="com.aclass.panther.uwm.pantherquiz.QuizReportByClassActivity"
             android:label="@string/title_quiz_report_by_class_activity" />
         <activity
-            android:name=".QuizQuestionsReportActivity"
+            android:name="com.aclass.panther.uwm.pantherquiz.QuizQuestionsReportActivity"
             android:label="@string/title_quiz_questions_report_activity" />
         <activity
-            android:name=".UserSettingsActivity"
+            android:name="com.aclass.panther.uwm.pantherquiz.UserSettingsActivity"
             android:label="@string/title_user_settings_activity" />
         <activity
-            android:name=".UserManualActvity"
+            android:name="com.aclass.panther.uwm.pantherquiz.UserManualActvity"
             android:label="@string/title_activity_user_manual_actvity" />
-        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
     </application>
 
 </manifest>

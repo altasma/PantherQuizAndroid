@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:background="@color/colorInsructorMain"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.aclass.panther.uwm.pantheractive.QuizListActivity">
+    tools:context="com.aclass.panther.uwm.pantherquiz.com.aclass.panther.uwm.pantherquiz.QuizListActivity">
 
     <TextView
         android:layout_width="wrap_content"

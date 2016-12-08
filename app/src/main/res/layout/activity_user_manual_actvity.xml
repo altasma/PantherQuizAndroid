@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.aclass.panther.uwm.pantheractive.UserManualActvity">
+    tools:context="com.aclass.panther.uwm.pantherquiz.com.aclass.panther.uwm.pantherquiz.UserManualActvity">
 
     <include layout="@layout/content_user_manual_actvity" />
 
